@@ -745,105 +745,40 @@ button {
 
 /* 
 ==================================================================
-   SECTION 5: DIARY PAGE
+   SECTION 5: CINEMATIC VIDEO (REPLACED DIARY)
 ==================================================================
 */
-.diary-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-.diary-page {
+.video-container {
     position: relative;
-    max-width: 650px;
     width: 100%;
-    aspect-ratio: 3 / 4;
-    background: #fdfdf9; /* Fine ivory/diary paper color */
-    border-radius: 6px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4),
-                0 30px 70px rgba(0,0,0,0.8),
-                inset 10px 0 25px rgba(0,0,0,0.08),
-                inset -5px 0 15px rgba(0,0,0,0.03);
-    border: 1px solid rgba(0,0,0,0.15);
+    aspect-ratio: 16 / 9;
+    max-width: 1000px;
+    margin: 0 auto;
+    border-radius: 24px;
     overflow: hidden;
-    cursor: zoom-in;
-    transform: rotate(-1.5deg);
-    transition: transform var(--transition-slow), box-shadow var(--transition-slow);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8),
+                0 0 30px rgba(var(--gold-rgb), 0.12);
+    background-color: #000000;
     opacity: 0;
+    transform: translateY(40px);
+    transition: opacity var(--transition-slow), transform var(--transition-slow), box-shadow var(--transition-medium);
 }
 
-.reveal-on-scroll.revealed .diary-page {
-    opacity: 1;
-    transform: rotate(-0.5deg);
-}
-
-.diary-page::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 20px;
-    bottom: 0;
-    width: 1px;
-    background-color: rgba(220, 100, 100, 0.25); /* Diary red margin line */
-    z-index: 10;
-}
-
-.diary-page:hover {
-    transform: rotate(0deg) scale(1.02);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.45),
-                0 35px 85px rgba(0,0,0,0.85);
-}
-
-.diary-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    mix-blend-mode: multiply; /* Blends perfectly into paper background texture */
-    padding: 30px 40px 30px 50px;
-    opacity: 0;
-    filter: blur(10px);
-    transition: opacity 1.5s var(--ease-apple), filter 1.5s var(--ease-apple);
-}
-
-.diary-image.loaded {
-    opacity: 1;
-    filter: blur(0);
-}
-
-.diary-hover-hint {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(0, 0, 0, 0.7);
-    color: #ffffff;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-family: var(--font-sans);
-    backdrop-filter: blur(5px);
-    pointer-events: none;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity var(--transition-medium), transform var(--transition-medium);
-    z-index: 15;
-}
-
-.diary-page:hover .diary-hover-hint {
+.reveal-on-scroll.revealed .video-container {
     opacity: 1;
     transform: translateY(0);
 }
 
-.diary-hover-hint svg {
-    width: 14px;
-    height: 14px;
+.final-video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: opacity 1s var(--ease-apple);
 }
 
-.diary-caption {
+.video-caption {
     margin-top: 30px;
     font-family: var(--font-serif);
     font-size: 1.25rem;
@@ -854,8 +789,61 @@ button {
     transition: opacity var(--transition-slow) 0.3s;
 }
 
-.reveal-on-scroll.revealed .diary-caption {
+.reveal-on-scroll.revealed .video-caption {
     opacity: 1;
+}
+
+/* Audio Overlay Hint */
+.video-audio-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(8px);
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity var(--transition-medium), visibility var(--transition-medium);
+}
+
+.video-audio-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.audio-overlay-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+}
+
+.audio-overlay-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--gold-light);
+    animation: pulseSlow 2.2s infinite ease-in-out;
+}
+
+.audio-overlay-content span {
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    font-weight: 300;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+@keyframes pulseSlow {
+    0%, 100% { opacity: 0.6; transform: scale(0.96); }
+    50% { opacity: 1; transform: scale(1.05); }
 }
 
 /* 
@@ -1099,7 +1087,7 @@ button {
 }
 
 .final-letter {
-    margin-bottom: 60px;
+    margin-bottom: 50px;
 }
 
 .final-p {
@@ -1138,51 +1126,74 @@ button {
 
 /* 
 ==================================================================
-   FINAL BUTTON & OUTRO SCREEN
+   GLASS BUTTONS (REPLACED SINGLE BUTTON)
 ==================================================================
 */
-.button-wrapper {
+.outro-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity var(--transition-slow) 1.2s, transform var(--transition-slow) 1.2s;
+    transform: translateY(25px);
+    transition: opacity var(--transition-slow) 1s, transform var(--transition-slow) 1s;
+    width: 100%;
+    margin-top: 20px;
 }
 
-.reveal-on-scroll.revealed .button-wrapper {
+.reveal-on-scroll.revealed .outro-buttons {
     opacity: 1;
     transform: translateY(0);
 }
 
-.final-btn {
+.glass-btn {
     position: relative;
-    padding: 16px 44px;
+    padding: 16px 36px;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border-radius: 40px;
     color: var(--text-color);
-    font-size: 1rem;
+    font-size: 0.95rem;
     letter-spacing: 0.05em;
     font-weight: 400;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5),
-                inset 0 1px 0 rgba(255,255,255,0.1);
+    box-shadow: var(--card-shadow);
     overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     transition: transform var(--transition-medium), border-color var(--transition-medium), box-shadow var(--transition-medium);
+    cursor: pointer;
+    min-width: 250px;
 }
 
-.final-btn:hover {
-    transform: scale(1.03);
+.glass-btn:hover {
+    transform: translateY(-3px) scale(1.02);
     border-color: var(--glass-border-hover);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.7),
+    box-shadow: 0 15px 35px rgba(0,0,0,0.7),
                 0 0 25px rgba(var(--gold-rgb), 0.15);
 }
 
-.final-btn:active {
-    transform: scale(0.98);
+.glass-btn:active {
+    transform: translateY(-1px) scale(0.99);
+}
+
+.glass-btn.button-secondary {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.glass-btn.button-secondary:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.7);
 }
 
 .btn-text {
     position: relative;
     z-index: 2;
+    pointer-events: none;
 }
 
 /* Click ripple element */
@@ -1203,7 +1214,11 @@ button {
     }
 }
 
-/* Outro Absolute Fadeout Fullscreen styling */
+/* 
+==================================================================
+   OUTRO FADEOUT SCREEN & TYPOGRAPHY
+==================================================================
+*/
 .outro-screen {
     position: fixed;
     top: 0;
@@ -1218,7 +1233,7 @@ button {
     align-items: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 2s ease-in-out, visibility 2s ease-in-out;
+    transition: opacity 2.5s ease-in-out, visibility 2.5s ease-in-out;
 }
 
 .outro-screen.revealed {
@@ -1236,159 +1251,112 @@ button {
     pointer-events: none;
 }
 
+/* Step 1: Ending Letter typography */
 .outro-content {
     text-align: center;
     position: relative;
     z-index: 2;
-    padding: 20px;
+    padding: 30px;
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1.5s var(--ease-apple), transform 1.5s var(--ease-apple);
 }
 
-.outro-text {
-    font-family: var(--font-serif);
-    font-size: 2.2rem;
-    font-style: italic;
-    color: var(--text-color);
-    margin: 20px 0;
+.outro-content.fade-out {
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 2.5s var(--ease-apple), transform 2.5s var(--ease-apple);
+    transform: scale(0.95);
+    pointer-events: none;
 }
 
-.outro-screen.revealed .outro-text {
+.outro-letter-text {
+    margin-bottom: 40px;
+    line-height: 2.1;
+}
+
+.outro-line {
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.5s var(--ease-apple), transform 1.5s var(--ease-apple);
+}
+
+.outro-screen.revealed .outro-line {
     opacity: 1;
     transform: translateY(0);
 }
 
-.outro-screen.revealed .delay-outro {
-    transition-delay: 2.5s;
+/* Delays for each line of ending text */
+.outro-screen.revealed .outro-line:nth-child(1)  { transition-delay: 0.5s; }
+.outro-screen.revealed .outro-line:nth-child(2)  { transition-delay: 1.7s; }
+.outro-screen.revealed .outro-line:nth-child(3)  { transition-delay: 2.9s; }
+.outro-screen.revealed .outro-line:nth-child(4)  { transition-delay: 4.5s; }
+.outro-screen.revealed .outro-line:nth-child(5)  { transition-delay: 5.7s; }
+.outro-screen.revealed .outro-line:nth-child(6)  { transition-delay: 7.2s; }
+.outro-screen.revealed .outro-line:nth-child(7)  { transition-delay: 8.4s; }
+.outro-screen.revealed .outro-line:nth-child(8)  { transition-delay: 9.8s; }
+.outro-screen.revealed .outro-line:nth-child(9)  { transition-delay: 10.8s; }
+.outro-screen.revealed .outro-line:nth-child(10) { transition-delay: 12.2s; }
+.outro-screen.revealed .outro-line:nth-child(11) { transition-delay: 13.4s; }
+
+.outro-line.highlight-gold {
     color: var(--gold-light);
-    text-shadow: 0 0 20px rgba(var(--gold-rgb), 0.3);
+    text-shadow: 0 0 15px rgba(var(--gold-rgb), 0.35);
 }
 
-/* 
-==================================================================
-   FULLSCREEN IMAGE MODAL (song.jpg Zoom/Pan)
-==================================================================
-*/
-.image-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.95);
-    z-index: 10050;
+.outro-line.spacing-bottom {
+    margin-bottom: 28px;
+}
+
+.outro-screen.revealed .outro-buttons {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 14.8s; /* Appears after text reading finishes */
+}
+
+/* Step 2: Resolution overlays */
+.outro-resolution {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+    z-index: 5;
     opacity: 0;
     visibility: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity var(--transition-medium), visibility var(--transition-medium);
-    overflow: hidden;
+    transition: opacity 2.5s var(--ease-apple), transform 2.5s var(--ease-apple), visibility 2.5s var(--ease-apple);
 }
 
-.image-modal.open {
+.outro-resolution.revealed {
     opacity: 1;
     visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
 }
 
-.modal-close {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
+.resolution-title {
+    font-size: 2.4rem;
+    font-weight: 300;
+    margin-bottom: 20px;
     color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
-    z-index: 10060;
 }
 
-.modal-close:hover {
-    background: rgba(255,255,255,0.15);
-    border-color: rgba(255,255,255,0.3);
-    transform: scale(1.05);
-}
-
-.modal-close svg {
-    width: 22px;
-    height: 22px;
-}
-
-.modal-content-wrapper {
-    width: 90vw;
-    height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: grab;
-    user-select: none;
-    touch-action: none;
-    z-index: 10052;
-}
-
-.modal-content-wrapper:active {
-    cursor: grabbing;
-}
-
-.modal-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    border-radius: 4px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-    transform-origin: center center;
-    will-change: transform;
-    transition: transform 0.1s ease-out;
-}
-
-.modal-zoom-controls {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 15px;
-    z-index: 10060;
-}
-
-.zoom-btn {
-    min-width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: #ffffff;
+.resolution-p {
     font-size: 1.2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 15px;
-    transition: background var(--transition-fast), border-color var(--transition-fast);
-    backdrop-filter: blur(10px);
-}
-
-.zoom-btn:hover {
-    background: rgba(255,255,255,0.2);
-    border-color: rgba(255,255,255,0.4);
-}
-
-.modal-instructions {
-    position: absolute;
-    bottom: 105px;
-    left: 50%;
-    transform: translateX(-50%);
+    font-weight: 300;
     color: var(--text-muted);
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    pointer-events: none;
-    z-index: 10060;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+}
+
+.outro-resolution.revealed .resolution-p.highlight-gold {
+    color: var(--gold-light);
+    text-shadow: 0 0 20px rgba(var(--gold-rgb), 0.4);
 }
 
 /* 
@@ -1422,6 +1390,10 @@ button {
     
     .stars-p.highlight-gold {
         font-size: 1.6rem;
+    }
+    
+    .video-container {
+        max-width: 85vw;
     }
 }
 
@@ -1498,8 +1470,27 @@ button {
         right: 20px;
     }
     
-    .outro-text {
-        font-size: 1.8rem;
+    .glass-btn {
+        min-width: 220px;
+        padding: 14px 28px;
+        font-size: 0.9rem;
+    }
+    
+    .outro-line {
+        font-size: 1.05rem;
+        line-height: 1.9;
+    }
+    
+    .outro-line.highlight-gold {
+        font-size: 1.15rem;
+    }
+    
+    .resolution-title {
+        font-size: 2rem;
+    }
+    
+    .resolution-p {
+        font-size: 1.05rem;
     }
 }
 
@@ -1567,16 +1558,12 @@ button {
         line-height: 1.5;
     }
     
-    .diary-page {
-        aspect-ratio: 3 / 4;
-        border-radius: 4px;
+    .video-container {
+        border-radius: 16px;
+        aspect-ratio: 16 / 9;
     }
     
-    .diary-image {
-        padding: 15px 20px 15px 25px;
-    }
-    
-    .diary-caption {
+    .video-caption {
         font-size: 1.05rem;
         margin-top: 20px;
     }
@@ -1619,28 +1606,41 @@ button {
         margin-top: 10px;
     }
     
-    .final-btn {
-        padding: 14px 30px;
+    .outro-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+    }
+    
+    .glass-btn {
+        width: 100%;
+        min-width: unset;
+        padding: 14px 20px;
+    }
+    
+    .outro-line {
         font-size: 0.9rem;
+        line-height: 1.8;
+        margin-bottom: 8px;
     }
     
-    .outro-text {
-        font-size: 1.5rem;
+    .outro-line.highlight-gold {
+        font-size: 1rem;
     }
     
-    .modal-close {
-        top: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
+    .outro-line.spacing-bottom {
+        margin-bottom: 18px;
     }
     
-    .zoom-btn {
-        min-width: 40px;
-        height: 40px;
+    .outro-line.spacing-top {
+        margin-top: 18px;
     }
     
-    .modal-instructions {
-        bottom: 95px;
+    .resolution-title {
+        font-size: 1.6rem;
+    }
+    
+    .resolution-p {
+        font-size: 0.95rem;
     }
 }

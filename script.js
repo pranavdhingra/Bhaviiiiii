@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initBackgroundParticles();
     initScrollEffects();
     initMusicPlayer();
-    initDiaryModal();
+    initVideoSection();
     initStarsSection();
     initFinalSection();
 });
@@ -31,8 +31,8 @@ function initLoadingScreen() {
 
     // Make loading overlay screen last 6.5s to complete text sequences
     setTimeout(() => {
-        loadingScreen.classList.add("fade-out");
-        mainContent.classList.remove("hidden");
+        if (loadingScreen) loadingScreen.classList.add("fade-out");
+        if (mainContent) mainContent.classList.remove("hidden");
         document.body.classList.remove("loading");
 
         // Subtle scale-in effect on hero image on entry
@@ -50,7 +50,7 @@ function initLoadingScreen() {
 
         // Remove loading screen from DOM after transition
         setTimeout(() => {
-            loadingScreen.remove();
+            if (loadingScreen) loadingScreen.remove();
         }, 1500);
     }, 6500);
 }
@@ -68,10 +68,10 @@ function initMouseGlow() {
 
     // Smooth glow trailing logic (lerp)
     function updateGlowPosition() {
+        if (!mouseGlow) return;
         const dx = mouseX - glowX;
         const dy = mouseY - glowY;
         
-        // Easing interpolation factor
         glowX += dx * 0.08;
         glowY += dy * 0.08;
 
@@ -86,14 +86,14 @@ function initMouseGlow() {
         mouseX = e.clientX;
         mouseY = e.clientY;
         
-        if (!isMoving) {
+        if (!isMoving && mouseGlow) {
             isMoving = true;
             mouseGlow.classList.add("active");
         }
     });
 
     window.addEventListener("mouseout", () => {
-        mouseGlow.classList.remove("active");
+        if (mouseGlow) mouseGlow.classList.remove("active");
         isMoving = false;
     });
 
@@ -106,23 +106,19 @@ function initMouseGlow() {
         card.addEventListener("mousemove", (e) => {
             const rect = card.getBoundingClientRect();
             
-            // Mouse coordinates relative to card
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
-            // Positioning relative spotlight glow inside card
             if (glow) {
                 glow.style.left = `${x}px`;
                 glow.style.top = `${y}px`;
             }
 
-            // Tilt calculations
             const width = rect.width;
             const height = rect.height;
             const centerX = width / 2;
             const centerY = height / 2;
             
-            // Max degrees of rotation
             const maxRotationX = 8;
             const maxRotationY = 8;
 
@@ -145,6 +141,7 @@ function initMouseGlow() {
 */
 function initBackgroundParticles() {
     const canvas = document.getElementById("particles-canvas");
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
 
     let particles = [];
@@ -152,6 +149,7 @@ function initBackgroundParticles() {
     let height = canvas.height = window.innerHeight;
 
     window.addEventListener("resize", () => {
+        if (!canvas) return;
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
     });
@@ -159,7 +157,6 @@ function initBackgroundParticles() {
     class Particle {
         constructor() {
             this.reset();
-            // Start scattered randomly on creation
             this.y = Math.random() * height;
         }
 
@@ -167,8 +164,8 @@ function initBackgroundParticles() {
             this.x = Math.random() * width;
             this.y = height + Math.random() * 20;
             this.size = Math.random() * 2.5 + 0.5;
-            this.speedY = Math.random() * 0.4 + 0.15; // Slow upward drift
-            this.speedX = Math.random() * 0.3 - 0.15; // Muted sway
+            this.speedY = Math.random() * 0.4 + 0.15;
+            this.speedX = Math.random() * 0.3 - 0.15;
             this.opacity = Math.random() * 0.4 + 0.15;
             this.swayAngle = Math.random() * Math.PI * 2;
             this.swaySpeed = Math.random() * 0.01 + 0.005;
@@ -179,12 +176,10 @@ function initBackgroundParticles() {
             this.swayAngle += this.swaySpeed;
             this.x += this.speedX + Math.sin(this.swayAngle) * 0.15;
 
-            // Fade out near the top
             if (this.y < 100) {
                 this.opacity -= 0.005;
             }
 
-            // Reset when invisible or offscreen
             if (this.y < 0 || this.opacity <= 0 || this.x < -10 || this.x > width + 10) {
                 this.reset();
             }
@@ -200,27 +195,22 @@ function initBackgroundParticles() {
         }
     }
 
-    // Spawn moderate amount of particles to avoid lagging mobile devices
     const particleCount = Math.min(60, Math.floor((width * height) / 18000));
     for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
     }
 
     function animate() {
-        // Exit loop if canvas is removed from DOM
         if (!canvas.parentNode) return;
-
         ctx.clearRect(0, 0, width, height);
         
-        // Base dark radial gradient backdrop
         const grad = ctx.createRadialGradient(width/2, height/2, 10, width/2, height/2, Math.max(width, height));
         grad.addColorStop(0, "#0c0c0c");
         grad.addColorStop(1, "#030303");
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, width, height);
 
-        // Render particles
-        ctx.shadowBlur = 0; // Reset for canvas fill performance
+        ctx.shadowBlur = 0;
         particles.forEach(p => {
             p.update();
             p.draw();
@@ -241,7 +231,6 @@ function initScrollEffects() {
     const heroImage = document.getElementById("hero-img");
     const scrollIndicator = document.getElementById("scroll-indicator");
 
-    // Scroll progress bar
     window.addEventListener("scroll", () => {
         const scrollTop = window.scrollY;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -251,12 +240,10 @@ function initScrollEffects() {
             scrollBar.style.width = `${scrolled}%`;
         }
 
-        // Hero Image Parallax zoom/slide
         if (heroImage) {
             heroImage.style.transform = `translateY(${scrollTop * 0.35}px) scale(${1 + scrollTop * 0.0003})`;
         }
 
-        // Hide scroll indicator mouse once user scrolls down
         if (scrollIndicator) {
             if (scrollTop > 100) {
                 scrollIndicator.style.opacity = "0";
@@ -268,7 +255,6 @@ function initScrollEffects() {
         }
     });
 
-    // Scroll indicator click scroll to Section 2
     if (scrollIndicator) {
         scrollIndicator.addEventListener("click", () => {
             const nextSec = document.getElementById("understanding-section");
@@ -278,14 +264,14 @@ function initScrollEffects() {
         });
     }
 
-    // Scroll Reveal Intersection Observer
+    // Scroll Reveal Observers
     const revealElements = document.querySelectorAll(".reveal-on-scroll");
     const revealTitles = document.querySelectorAll(".section-title");
 
     const observerOptions = {
         root: null,
         rootMargin: "0px",
-        threshold: 0.12 // Trigger when 12% is visible
+        threshold: 0.1
     };
 
     const revealObserver = new IntersectionObserver((entries, observer) => {
@@ -293,13 +279,9 @@ function initScrollEffects() {
             if (entry.isIntersecting) {
                 entry.target.classList.add("revealed");
                 
-                // If it contains custom section-title reveal inside it
                 const title = entry.target.querySelector(".section-title");
-                if (title) {
-                    title.classList.add("revealed");
-                }
+                if (title) title.classList.add("revealed");
 
-                // If stars text triggers
                 const starsText = entry.target.querySelector(".stars-text");
                 const starsTitle = entry.target.querySelector(".stars-title");
                 if (starsTitle) starsTitle.classList.add("revealed");
@@ -334,7 +316,7 @@ function initScrollEffects() {
 
 /* 
 ==================================================================
-   5. FLOATING MUSIC PLAYER & RESUMING STATE
+   5. FLOATING MUSIC PLAYER & FADE CONTROLLERS
 ==================================================================
 */
 function initMusicPlayer() {
@@ -371,7 +353,7 @@ function initMusicPlayer() {
             playIcon.classList.add("hidden");
             pauseIcon.classList.remove("hidden");
         }).catch(err => {
-            console.log("Audio autoplay prevented or errored: ", err);
+            console.log("Audio autoplay prevented: ", err);
         });
     }
 
@@ -389,170 +371,104 @@ function initMusicPlayer() {
         }
     });
 
-    // Simple fade-out mechanism for audio (helper function)
-    window.fadeOutAudio = function(durationMs) {
+    // Smooth fade controller for clashing audio tracks
+    window.fadeBgMusic = function(targetVolume, durationMs) {
+        clearInterval(audio.fadeInterval);
         const startVolume = audio.volume;
-        const steps = 30;
-        const intervalTime = durationMs / steps;
+        const diff = targetVolume - startVolume;
+        const steps = 25;
+        const stepTime = durationMs / steps;
         let currentStep = 0;
 
-        const volumeInterval = setInterval(() => {
+        audio.fadeInterval = setInterval(() => {
             currentStep++;
-            audio.volume = Math.max(0, startVolume * (1 - (currentStep / steps)));
+            audio.volume = Math.max(0, Math.min(1, startVolume + (diff * (currentStep / steps))));
             if (currentStep >= steps) {
-                clearInterval(volumeInterval);
-                audio.pause();
+                clearInterval(audio.fadeInterval);
+                audio.volume = targetVolume;
+                if (targetVolume === 0 && !audio.paused) {
+                    audio.pause();
+                } else if (targetVolume > 0 && audio.paused) {
+                    audio.play().catch(e => console.log("Play failed on fade in:", e));
+                }
             }
-        }, intervalTime);
+        }, stepTime);
     };
 }
 
 /* 
 ==================================================================
-   6. DIARY PAGE ZOOM MODAL
+   6. CINEMATIC VIDEO (AUTOPLAY / VISIBILITY / UNMUTE OVERLAY)
 ==================================================================
 */
-function initDiaryModal() {
-    const songImg = document.getElementById("song-img");
-    const modal = document.getElementById("image-modal");
-    const modalImg = document.getElementById("modal-img");
-    const modalClose = document.getElementById("modal-close");
-    const modalWrapper = document.getElementById("modal-wrapper");
+function initVideoSection() {
+    const video = document.getElementById("final-video");
+    const overlay = document.getElementById("video-audio-overlay");
+    const container = document.getElementById("video-container");
 
-    // Zoom Buttons
-    const btnIn = document.getElementById("zoom-in");
-    const btnOut = document.getElementById("zoom-out");
-    const btnReset = document.getElementById("zoom-reset");
+    if (!video || !container) return;
 
-    if (!songImg || !modal || !modalImg) return;
+    let userInteracted = false;
 
-    let scale = 1;
-    let translateX = 0;
-    let translateY = 0;
-    let isDragging = false;
-    let startX = 0, startY = 0;
+    // Scroll Observer to play when visible and pause when leaving
+    const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                attemptPlayVideo();
+            } else {
+                video.pause();
+                // Restore background music if we scroll away
+                if (!video.muted && window.fadeBgMusic) {
+                    window.fadeBgMusic(0.8, 1000);
+                }
+            }
+        });
+    }, { threshold: 0.15 });
 
-    function applyTransforms() {
-        modalImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    videoObserver.observe(container);
+
+    function attemptPlayVideo() {
+        // Attempt playing unmuted first
+        video.muted = false;
+        video.play().then(() => {
+            // Unmuted playback allowed! Hide click overlay
+            overlay.classList.add("hidden");
+            if (window.fadeBgMusic) {
+                window.fadeBgMusic(0, 1000); // Fade out clashing music
+            }
+        }).catch(() => {
+            // Blocked. Play muted and reveal "Tap once" overlay
+            video.muted = true;
+            if (overlay) overlay.classList.remove("hidden");
+            video.play().catch(e => console.log("Muted play failed:", e));
+        });
     }
 
-    function resetTransforms() {
-        scale = 1;
-        translateX = 0;
-        translateY = 0;
-        applyTransforms();
-    }
-
-    // Open Modal
-    songImg.closest(".diary-page").addEventListener("click", () => {
-        modalImg.src = songImg.src;
-        modal.classList.add("open");
-        modal.setAttribute("aria-hidden", "false");
-        document.body.style.overflow = "hidden"; // Lock scroll
-        resetTransforms();
-    });
-
-    // Close Modal
-    function closeModal() {
-        modal.classList.remove("open");
-        modal.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = ""; // Restore scroll
-        resetTransforms();
-    }
-
-    modalClose.addEventListener("click", closeModal);
-    
-    // Close on background click
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal || e.target === modalWrapper) {
-            closeModal();
-        }
-    });
-
-    // Close on Esc key
-    window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && modal.classList.contains("open")) {
-            closeModal();
-        }
-    });
-
-    // Zoom in/out logic
-    function zoom(amount) {
-        scale = Math.max(0.7, Math.min(5, scale + amount));
-        applyTransforms();
-    }
-
-    btnIn.addEventListener("click", () => zoom(0.3));
-    btnOut.addEventListener("click", () => zoom(-0.3));
-    btnReset.addEventListener("click", resetTransforms);
-
-    // Mouse wheel zoom support
-    modalWrapper.addEventListener("wheel", (e) => {
-        e.preventDefault();
-        const zoomStep = 0.08;
-        if (e.deltaY < 0) {
-            zoom(zoomStep);
+    // Tap to unmute / toggle play handler
+    container.addEventListener("click", () => {
+        if (video.muted) {
+            userInteracted = true;
+            video.muted = false;
+            if (overlay) overlay.classList.add("hidden");
+            if (window.fadeBgMusic) {
+                window.fadeBgMusic(0, 1000); // Fade background music completely
+            }
+            video.play().catch(e => console.log(e));
         } else {
-            zoom(-zoomStep);
-        }
-    }, { passive: false });
-
-    // Drag / Pan Image inside Modal Wrapper
-    modalWrapper.addEventListener("mousedown", (e) => {
-        e.preventDefault();
-        isDragging = true;
-        startX = e.clientX - translateX;
-        startY = e.clientY - translateY;
-    });
-
-    window.addEventListener("mousemove", (e) => {
-        if (!isDragging) return;
-        translateX = e.clientX - startX;
-        translateY = e.clientY - startY;
-        applyTransforms();
-    });
-
-    window.addEventListener("mouseup", () => {
-        isDragging = false;
-    });
-
-    // Touch support (Pinch-to-zoom & Swipe Drag)
-    let initialTouchDist = 0;
-
-    modalWrapper.addEventListener("touchstart", (e) => {
-        if (e.touches.length === 1) {
-            isDragging = true;
-            startX = e.touches[0].clientX - translateX;
-            startY = e.touches[0].clientY - translateY;
-        } else if (e.touches.length === 2) {
-            isDragging = false;
-            initialTouchDist = Math.hypot(
-                e.touches[0].clientX - e.touches[1].clientX,
-                e.touches[0].clientY - e.touches[1].clientY
-            );
+            // Regular play/pause toggle when already unmuted
+            if (video.paused) {
+                video.play();
+                if (window.fadeBgMusic) window.fadeBgMusic(0, 800);
+            } else {
+                video.pause();
+                if (window.fadeBgMusic) window.fadeBgMusic(0.8, 800);
+            }
         }
     });
 
-    modalWrapper.addEventListener("touchmove", (e) => {
-        if (isDragging && e.touches.length === 1) {
-            translateX = e.touches[0].clientX - startX;
-            translateY = e.touches[0].clientY - startY;
-            applyTransforms();
-        } else if (e.touches.length === 2) {
-            e.preventDefault();
-            const currentDist = Math.hypot(
-                e.touches[0].clientX - e.touches[1].clientX,
-                e.touches[0].clientY - e.touches[1].clientY
-            );
-            const scaleFactor = currentDist / initialTouchDist;
-            scale = Math.max(0.7, Math.min(5, scale * scaleFactor));
-            initialTouchDist = currentDist;
-            applyTransforms();
-        }
-    }, { passive: false });
-
-    modalWrapper.addEventListener("touchend", () => {
-        isDragging = false;
+    // When video completes, trigger the transition screen
+    video.addEventListener("ended", () => {
+        triggerOutro();
     });
 }
 
@@ -563,6 +479,7 @@ function initDiaryModal() {
 */
 function initStarsSection() {
     const canvas = document.getElementById("stars-canvas");
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
 
     let width = canvas.width = canvas.offsetWidth;
@@ -613,7 +530,7 @@ function initStarsSection() {
 
         reset() {
             this.x = Math.random() * width;
-            this.y = Math.random() * (height * 0.5); // Spawn in upper half
+            this.y = Math.random() * (height * 0.5);
             this.length = Math.random() * 80 + 30;
             this.speedX = Math.random() * 8 + 4;
             this.speedY = Math.random() * 3 + 1.5;
@@ -646,37 +563,31 @@ function initStarsSection() {
         }
     }
 
-    // Star count adjusted to canvas dimensions
     const starCount = Math.min(250, Math.floor((width * height) / 4000));
     for (let i = 0; i < starCount; i++) {
         stars.push(new Star());
     }
 
-    // Max 2 shooting stars floating around
     for (let i = 0; i < 2; i++) {
         shootingStars.push(new ShootingStar());
     }
 
     function animateStars() {
-        // Stop animating if star section canvas is completely out of viewport
         const rect = canvas.getBoundingClientRect();
         if (rect.bottom > 0 && rect.top < window.innerHeight) {
             ctx.clearRect(0, 0, width, height);
 
-            // Draw deep space background gradient
             const spaceGrad = ctx.createLinearGradient(0, 0, 0, height);
             spaceGrad.addColorStop(0, "#000000");
             spaceGrad.addColorStop(1, "#030308");
             ctx.fillStyle = spaceGrad;
             ctx.fillRect(0, 0, width, height);
 
-            // Update & Draw stars
             stars.forEach(s => {
                 s.update();
                 s.draw();
             });
 
-            // Twinkle shooting stars
             shootingStars.forEach(ss => {
                 ss.update();
                 ss.draw();
@@ -689,19 +600,30 @@ function initStarsSection() {
 
 /* 
 ==================================================================
-   8. FINAL SECTION BUTTON CLICK & OUTRO PARTICLES
+   8. FINAL SECTION & OUTRO RESOLUTION TRANSITIONS
 ==================================================================
 */
+let globalOutroCanvasActive = false;
+
 function initFinalSection() {
-    const finalBtn = document.getElementById("final-btn");
-    const outroScreen = document.getElementById("outro-screen");
-    const outroCanvas = document.getElementById("outro-particles-canvas");
+    const btnScrollBelieve = document.getElementById("final-btn-believe");
+    const btnScrollClose = document.getElementById("final-btn-close");
 
-    if (!finalBtn || !outroScreen || !outroCanvas) return;
+    const btnOutroBelieve = document.getElementById("outro-btn-believe");
+    const btnOutroClose = document.getElementById("outro-btn-close");
 
-    finalBtn.addEventListener("click", (e) => {
-        // --- BUTTON RIPPLE EFFECT ---
-        const rect = finalBtn.getBoundingClientRect();
+    // Add ripples and route clicks
+    setupRippleListener(btnScrollBelieve, () => triggerOutro("believe"));
+    setupRippleListener(btnScrollClose, () => triggerOutro("close"));
+
+    setupRippleListener(btnOutroBelieve, () => runFinalResolution("believe"));
+    setupRippleListener(btnOutroClose, () => runFinalResolution("close"));
+}
+
+function setupRippleListener(btn, callback) {
+    if (!btn) return;
+    btn.addEventListener("click", (e) => {
+        const rect = btn.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
@@ -709,151 +631,194 @@ function initFinalSection() {
         ripple.classList.add("btn-ripple");
         ripple.style.left = `${x}px`;
         ripple.style.top = `${y}px`;
-        finalBtn.appendChild(ripple);
+        btn.appendChild(ripple);
 
         setTimeout(() => {
             ripple.remove();
         }, 600);
 
-        // --- INITIATE OUTRO ---
+        setTimeout(callback, 500);
+    });
+}
+
+// Unified transition to outro black screen
+window.triggerOutro = function(directChoice = null) {
+    const outroScreen = document.getElementById("outro-screen");
+    const bgCanvas = document.getElementById("particles-canvas");
+    const video = document.getElementById("final-video");
+
+    if (!outroScreen) return;
+
+    // Pause video & music
+    if (video) video.pause();
+    if (window.fadeBgMusic) {
+        window.fadeBgMusic(0, 2000); // fade out completely
+    }
+
+    // Stop global particle background
+    if (bgCanvas) bgCanvas.remove();
+
+    outroScreen.classList.remove("hidden");
+    outroScreen.offsetHeight; // force redraw
+    outroScreen.classList.add("revealed");
+
+    if (directChoice) {
+        // Skip letter and go directly to resolution choice
+        const letter = document.getElementById("outro-letter-content");
+        if (letter) {
+            letter.classList.add("hidden");
+        }
+        runFinalResolution(directChoice);
+    }
+};
+
+function runFinalResolution(choice) {
+    const letter = document.getElementById("outro-letter-content");
+    const resBelieve = document.getElementById("resolution-believe");
+    const resClose = document.getElementById("resolution-close");
+
+    if (letter) {
+        letter.classList.add("fade-out");
         setTimeout(() => {
-            // Fade out audio slowly
-            if (window.fadeOutAudio) {
-                window.fadeOutAudio(2500);
-            }
+            letter.classList.add("hidden");
+        }, 1500);
+    }
 
-            // Reveal Outro overlay screen
-            outroScreen.classList.remove("hidden");
-            // Force redraw for css opacity transition
-            outroScreen.offsetHeight;
-            outroScreen.classList.add("revealed");
+    setTimeout(() => {
+        if (choice === "believe" && resBelieve) {
+            resBelieve.classList.remove("hidden");
+            resBelieve.offsetHeight;
+            resBelieve.classList.add("revealed");
+            runOutroParticles("believe");
+        } else if (choice === "close" && resClose) {
+            resClose.classList.remove("hidden");
+            resClose.offsetHeight;
+            resClose.classList.add("revealed");
+            runOutroParticles("close");
+        }
+    }, 800);
+}
 
-            // Stop global page background canvas
-            const bgCanvas = document.getElementById("particles-canvas");
-            if (bgCanvas) bgCanvas.remove();
+function runOutroParticles(choice) {
+    const outroCanvas = document.getElementById("outro-particles-canvas");
+    if (!outroCanvas) return;
+    const ctx = outroCanvas.getContext("2d");
 
-            // Run explosion particles
-            runOutroParticles();
-        }, 550);
+    let oWidth = outroCanvas.width = window.innerWidth;
+    let oHeight = outroCanvas.height = window.innerHeight;
+
+    window.addEventListener("resize", () => {
+        if (!outroCanvas) return;
+        oWidth = outroCanvas.width = window.innerWidth;
+        oHeight = outroCanvas.height = window.innerHeight;
     });
 
-    function runOutroParticles() {
-        const ctx = outroCanvas.getContext("2d");
-        let oWidth = outroCanvas.width = window.innerWidth;
-        let oHeight = outroCanvas.height = window.innerHeight;
+    let particles = [];
+    globalOutroCanvasActive = true;
 
-        window.addEventListener("resize", () => {
-            if (!outroCanvas) return;
-            oWidth = outroCanvas.width = window.innerWidth;
-            oHeight = outroCanvas.height = window.innerHeight;
+    class Sparkle {
+        constructor(startX, startY) {
+            this.x = startX;
+            this.y = startY;
+            
+            const angle = Math.random() * Math.PI * 2;
+            const speed = choice === "believe" ? (Math.random() * 4.5 + 2) : (Math.random() * 2.5 + 0.8);
+            
+            this.speedX = Math.cos(angle) * speed;
+            this.speedY = Math.sin(angle) * speed;
+            
+            this.size = Math.random() * 2 + 1;
+            this.gravity = choice === "believe" ? -0.015 : 0.01; // Floating upward for love, falling for close
+            this.opacity = 1;
+            this.fade = choice === "believe" ? (Math.random() * 0.007 + 0.003) : (Math.random() * 0.009 + 0.005);
+            
+            this.isHeart = choice === "believe" && Math.random() > 0.75;
+            this.rot = Math.random() * Math.PI * 2;
+            this.rotSpeed = Math.random() * 0.04 - 0.02;
+        }
+
+        update() {
+            this.speedY += this.gravity;
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.rot += this.rotSpeed;
+            
+            this.speedX *= 0.98;
+            this.speedY *= 0.98;
+
+            this.opacity -= this.fade;
+        }
+
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rot);
+            ctx.globalAlpha = Math.max(0, this.opacity);
+
+            ctx.shadowBlur = choice === "believe" ? 12 : 5;
+            ctx.shadowColor = `rgba(212, 175, 55, ${this.opacity * 0.5})`;
+
+            if (this.isHeart) {
+                // Vector heart
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(-5, -5, -10, 0, -10, 5);
+                ctx.bezierCurveTo(-10, 10, 0, 15, 0, 18);
+                ctx.bezierCurveTo(0, 15, 10, 10, 10, 5);
+                ctx.bezierCurveTo(10, 0, 5, -5, 0, 0);
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                ctx.fill();
+            } else {
+                ctx.beginPath();
+                ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = choice === "believe" ? 
+                    `rgba(212, 175, 55, ${this.opacity})` : 
+                    `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+    }
+
+    // Exploding burst
+    const initialCount = choice === "believe" ? 140 : 80;
+    for (let i = 0; i < initialCount; i++) {
+        particles.push(new Sparkle(oWidth / 2, oHeight * 0.45));
+    }
+
+    // Continuous floating dust stream
+    const streamInterval = setInterval(() => {
+        if (!globalOutroCanvasActive) {
+            clearInterval(streamInterval);
+            return;
+        }
+        if (particles.length < 250) {
+            if (choice === "believe") {
+                // Rise from bottom
+                particles.push(new Sparkle(Math.random() * oWidth, oHeight + 10));
+            } else {
+                // Muted ashes falling from top
+                particles.push(new Sparkle(Math.random() * oWidth, -10));
+            }
+        }
+    }, 140);
+
+    function animateOutro() {
+        if (!outroCanvas.parentNode) return;
+        ctx.clearRect(0, 0, oWidth, oHeight);
+        
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, oWidth, oHeight);
+
+        particles.forEach((p, idx) => {
+            p.update();
+            p.draw();
+            if (p.opacity <= 0) {
+                particles.splice(idx, 1);
+            }
         });
 
-        let particles = [];
-
-        class Sparkle {
-            constructor(startX, startY) {
-                this.x = startX;
-                this.y = startY;
-                
-                // Explode outwards radially
-                const angle = Math.random() * Math.PI * 2;
-                const speed = Math.random() * 4 + 1.5;
-                
-                this.speedX = Math.cos(angle) * speed;
-                this.speedY = Math.sin(angle) * speed;
-                
-                this.size = Math.random() * 2 + 1;
-                this.gravity = 0.02;
-                this.opacity = 1;
-                this.fade = Math.random() * 0.008 + 0.004;
-                
-                // Random heart or circle
-                this.isHeart = Math.random() > 0.85;
-                this.rot = Math.random() * Math.PI * 2;
-                this.rotSpeed = Math.random() * 0.05 - 0.025;
-            }
-
-            update() {
-                this.speedY += this.gravity;
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.rot += this.rotSpeed;
-                
-                // Slowly decay drift speed
-                this.speedX *= 0.98;
-                this.speedY *= 0.98;
-
-                this.opacity -= this.fade;
-            }
-
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.rot);
-                ctx.globalAlpha = Math.max(0, this.opacity);
-
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = `rgba(212, 175, 55, ${this.opacity * 0.5})`;
-
-                if (this.isHeart) {
-                    // Draw a vector heart
-                    ctx.beginPath();
-                    ctx.moveTo(0, 0);
-                    ctx.bezierCurveTo(-5, -5, -10, 0, -10, 5);
-                    ctx.bezierCurveTo(-10, 10, 0, 15, 0, 18);
-                    ctx.bezierCurveTo(0, 15, 10, 10, 10, 5);
-                    ctx.bezierCurveTo(10, 0, 5, -5, 0, 0);
-                    ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
-                    ctx.fill();
-                } else {
-                    // Draw clean sparkles
-                    ctx.beginPath();
-                    ctx.arc(0, 0, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = Math.random() > 0.5 ? 
-                        `rgba(212, 175, 55, ${this.opacity})` : 
-                        `rgba(255, 255, 255, ${this.opacity})`;
-                    ctx.fill();
-                }
-                ctx.restore();
-            }
-        }
-
-        // Generate immediate burst center screen, then stream floating stars
-        const initialCount = 120;
-        for (let i = 0; i < initialCount; i++) {
-            particles.push(new Sparkle(oWidth / 2, oHeight * 0.45));
-        }
-
-        // Continuous streaming floating upwards particles (like ashes/dust in wind)
-        const streamInterval = setInterval(() => {
-            if (particles.length < 250) {
-                // Spawn a few from bottom
-                particles.push(new Sparkle(Math.random() * oWidth, oHeight + 10));
-            }
-        }, 120);
-
-        function animateOutro() {
-            ctx.clearRect(0, 0, oWidth, oHeight);
-            
-            // Clean absolute black overlay backdrop
-            ctx.fillStyle = "#000000";
-            ctx.fillRect(0, 0, oWidth, oHeight);
-
-            particles.forEach((p, idx) => {
-                p.update();
-                p.draw();
-                if (p.opacity <= 0) {
-                    particles.splice(idx, 1);
-                }
-            });
-
-            requestAnimationFrame(animateOutro);
-        }
         requestAnimationFrame(animateOutro);
-        
-        // Safety timeout to clean up interval streamer after 1 minute
-        setTimeout(() => {
-            clearInterval(streamInterval);
-        }, 60000);
     }
+    requestAnimationFrame(animateOutro);
 }
