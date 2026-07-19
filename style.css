@@ -91,6 +91,10 @@ button {
     font-family: var(--font-serif);
 }
 
+.font-handwritten {
+    font-family: "Caveat", cursive, var(--font-serif);
+}
+
 .highlight-gold {
     color: var(--gold-light);
     text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
@@ -496,6 +500,46 @@ button {
 
 /* 
 ==================================================================
+   PREMIUM DYNAMIC BLURRED BACKDROP CONTAINERS (PREVENT CROPPING)
+==================================================================
+*/
+.blurred-bg-container {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #020202;
+}
+
+.blurred-bg-container::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background: inherit;
+    filter: blur(25px) brightness(0.35);
+    z-index: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease-in-out;
+}
+
+/* Sharp foreground elements centered on top */
+.blurred-bg-container img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important; /* Fit inside the bounding wrapper, NEVER crop faces */
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65);
+}
+
+/* 
+==================================================================
    CUTE CALL SCREEN FRAME (SECTION 5)
 ==================================================================
 */
@@ -797,7 +841,7 @@ button {
 
 /* 
 ==================================================================
-   SECTION 8: FINAL MEMORY VIDEO
+   SECTION 8: FINAL MEMORY VIDEO (CONTAINED & SLIGHTLY REDUCED)
 ==================================================================
 */
 .video-section {
@@ -806,19 +850,22 @@ button {
 
 .video-container {
     position: relative;
-    width: 100%;
+    width: 90%;
+    max-width: 760px; /* Reduced dimension to fit entire canvas */
     aspect-ratio: 16 / 9;
-    max-width: 1000px;
     margin: 0 auto;
     border-radius: 24px;
     overflow: hidden;
     border: 1px solid var(--glass-border);
     box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9),
                 0 0 40px rgba(var(--gold-rgb), 0.15);
-    background-color: #000000;
     opacity: 0;
     transform: translateY(40px);
     transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.video-container.blurred-bg-container {
+    background-image: url('assets/images/hero.jpeg'); /* Fallback blur frame backdrop */
 }
 
 .reveal-on-scroll.revealed .video-container {
@@ -830,7 +877,9 @@ button {
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: cover;
+    object-fit: contain !important; /* Fit within bounding box, NEVER crop video bounds */
+    position: relative;
+    z-index: 1;
 }
 
 /* Video Unmute overlay layout */
@@ -907,7 +956,7 @@ button {
 .outro-letter-text.active .outro-buttons {
     opacity: 1;
     transform: translateY(0);
-    transition-delay: 5s; /* Reveals smoothly after final sentence fades in */
+    transition-delay: 5s;
 }
 
 .glass-btn {
@@ -1117,6 +1166,15 @@ button {
     transform: translate(-50%, -50%) scale(1);
 }
 
+.resolution-text-wrapper {
+    transition: opacity 1.8s var(--ease-apple), transform 1.8s var(--ease-apple);
+}
+
+.resolution-text-wrapper.fade-out {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
 .resolution-title {
     font-size: 2.4rem;
     font-weight: 300;
@@ -1125,14 +1183,101 @@ button {
 }
 
 .resolution-p {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 300;
-    color: var(--text-muted);
+    color: rgba(255,255,255,0.85);
+    line-height: 2;
 }
 
 .outro-resolution.revealed .resolution-p.highlight-gold {
     color: var(--gold-light);
     text-shadow: 0 0 20px rgba(var(--gold-rgb), 0.4);
+}
+
+/* FaceTime Calls Actions Container */
+.resolution-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 35px;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 1.5s var(--ease-apple), transform 1.5s var(--ease-apple);
+}
+
+.resolution-actions.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.resolution-actions .glass-btn {
+    width: 100%;
+    max-width: 320px;
+}
+
+.resolution-actions .glass-btn.hidden {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+    pointer-events: none;
+    transform: scale(0.9) translateY(10px);
+}
+
+.resolution-actions .glass-btn.revealed {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1) translateY(0);
+    transition: opacity 1s var(--ease-apple), transform 1s var(--ease-apple);
+}
+
+/* 
+==================================================================
+   CURSIVE GLOWING SIGNATURE (FINAL ENDING)
+==================================================================
+*/
+.final-love-message {
+    margin-top: 50px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 4s ease-in-out, transform 4s ease-in-out;
+    width: 100%;
+}
+
+.final-love-message.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.love-text {
+    font-size: 2.8rem;
+    color: #ffffff;
+    letter-spacing: 0.05em;
+    font-weight: 400;
+}
+
+.love-hearts {
+    font-size: 2.5rem;
+    display: inline-block;
+    margin-left: 10px;
+    animation: heartGlowPulse 2.5s infinite ease-in-out alternate;
+}
+
+@keyframes heartGlowPulse {
+    0% {
+        transform: scale(0.95);
+        text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+    }
+    100% {
+        transform: scale(1.1);
+        text-shadow: 0 0 25px rgba(255, 0, 0, 0.95),
+                     0 0 35px rgba(255, 0, 0, 0.65);
+    }
 }
 
 /* 
@@ -1422,5 +1567,17 @@ button {
     
     .resolution-p {
         font-size: 0.95rem;
+    }
+    
+    .love-text {
+        font-size: 2rem;
+    }
+    
+    .love-hearts {
+        font-size: 1.8rem;
+    }
+    
+    .final-love-message {
+        margin-top: 35px;
     }
 }

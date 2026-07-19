@@ -1,6 +1,6 @@
 /**
  * ------------------------------------------------------------------
- *   Bhaviiiiii - Script logic (Storytelling & Cinematic Update)
+ *   Bhaviiiiii - Script logic (Storytelling & FaceTime Climax Update)
  * ------------------------------------------------------------------
  */
 
@@ -30,18 +30,15 @@ function initLoadingScreen() {
     const mainContent = document.getElementById("main-content");
     const heroImage = document.getElementById("hero-img");
 
-    // Make loading overlay screen last 6.5s to complete text sequences
     setTimeout(() => {
         if (loadingScreen) loadingScreen.classList.add("fade-out");
         if (mainContent) mainContent.classList.remove("hidden");
         document.body.classList.remove("loading");
 
-        // Scale-in effect on hero image on entry
         if (heroImage) {
             heroImage.style.transform = "scale(1)";
         }
 
-        // Trigger hero text reveal
         setTimeout(() => {
             const reveals = document.querySelectorAll(".hero-content .text-reveal, .hero-content .text-reveal-delay-1, .hero-content .text-reveal-delay-2");
             reveals.forEach(el => {
@@ -51,7 +48,6 @@ function initLoadingScreen() {
             });
         }, 300);
 
-        // Remove loading screen from DOM after transition
         setTimeout(() => {
             if (loadingScreen) loadingScreen.remove();
         }, 1500);
@@ -60,7 +56,7 @@ function initLoadingScreen() {
 
 /* 
 ==================================================================
-   2. INTERACTIVE MOUSE GLOW & TILT CARDS
+   2. INTERACTIVE MOUSE GLOW
 ==================================================================
 */
 function initMouseGlow() {
@@ -272,7 +268,13 @@ function initScrollEffects() {
                 img.addEventListener("load", () => {
                     img.classList.add("loaded");
                     
-                    // Specific trigger for Section 6 background blur synching
+                    // Assign loaded source as blurred background on container
+                    const blurredBg = img.closest(".blurred-bg-container");
+                    if (blurredBg) {
+                        blurredBg.style.backgroundImage = `url('${img.src}')`;
+                    }
+                    
+                    // Section 6 specific synchronization
                     if (img.id === "fav-pic-img") {
                         const bg = document.getElementById("fav-pic-bg");
                         if (bg) {
@@ -315,17 +317,14 @@ function initFavouritePictureSequence() {
     favObserver.observe(favSection);
 
     function runTextSequence() {
-        // Step 1: Fade in first text block after zoom animation starts
         setTimeout(() => {
             text1.classList.add("active");
         }, 1200);
 
-        // Step 2: Fade out first text block after 6s
         setTimeout(() => {
             text1.classList.remove("active");
         }, 7200);
 
-        // Step 3: Fade in second text block after first fades out fully (1.5s gap)
         setTimeout(() => {
             text2.classList.add("active");
         }, 8700);
@@ -486,8 +485,6 @@ function initVideoSection() {
 
     if (!video || !container) return;
 
-    let userInteracted = false;
-
     const videoObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -501,26 +498,22 @@ function initVideoSection() {
     videoObserver.observe(container);
 
     function attemptPlayVideo() {
-        // Try unmuted play first
         video.muted = false;
         video.play().then(() => {
             overlay.classList.add("hidden");
         }).catch(() => {
-            // Autoplay blocked. Play muted, display "Tap once" overlay
             video.muted = true;
             if (overlay) overlay.classList.remove("hidden");
-            video.play().catch(e => console.log("Muted autoplay failed:", e));
+            video.play().catch(e => console.log("Muted play blocked:", e));
         });
     }
 
     container.addEventListener("click", () => {
-        userInteracted = true;
         if (video.muted) {
             video.muted = false;
             if (overlay) overlay.classList.add("hidden");
             video.play().catch(e => console.log(e));
         } else {
-            // Toggle play/pause state
             if (video.paused) {
                 video.play();
             } else {
@@ -529,7 +522,6 @@ function initVideoSection() {
         }
     });
 
-    // Wait exactly 2 seconds on end before triggering the outro screen
     video.addEventListener("ended", () => {
         setTimeout(() => {
             triggerOutro();
@@ -665,7 +657,7 @@ function initStarsSection() {
 
 /* 
 ==================================================================
-   9. FINAL SECTION BUTTONS & TYPOGRAPHY TIMING ORCHESTRATION
+   9. OUTRO RESOLUTIONS (FACETIME & CLOSURE CURSIVE ENDINGS)
 ==================================================================
 */
 let globalOutroCanvasActive = false;
@@ -677,13 +669,30 @@ function initFinalSection() {
     const btnOutroBelieve = document.getElementById("outro-btn-believe");
     const btnOutroClose = document.getElementById("outro-btn-close");
 
-    // Click handler for scrolling page final buttons
     setupRippleListener(btnScrollBelieve, () => triggerOutro("believe"));
     setupRippleListener(btnScrollClose, () => triggerOutro("close"));
 
-    // Click handler for outro overlay screen final choice buttons
     setupRippleListener(btnOutroBelieve, () => runFinalResolution("believe"));
     setupRippleListener(btnOutroClose, () => runFinalResolution("close"));
+
+    // FaceTime click action with WA message fallback trigger
+    const facetimeBtn = document.getElementById("facetime-btn");
+    if (facetimeBtn) {
+        facetimeBtn.addEventListener("click", () => {
+            // Attempt protocol launch
+            window.location.href = "facetime://9996500577";
+            
+            // Show fallback WhatsApp button after 1.5s
+            setTimeout(() => {
+                const waBtn = document.getElementById("facetime-message-btn");
+                if (waBtn) {
+                    waBtn.classList.remove("hidden");
+                    waBtn.offsetHeight;
+                    waBtn.classList.add("revealed");
+                }
+            }, 1500);
+        });
+    }
 }
 
 function setupRippleListener(btn, callback) {
@@ -707,7 +716,7 @@ function setupRippleListener(btn, callback) {
     });
 }
 
-// Transitions to black and starts the sequential text sequence
+// Fade page and launch outro letter sequence
 window.triggerOutro = function(directChoice = null) {
     const outroScreen = document.getElementById("outro-screen");
     const bgCanvas = document.getElementById("particles-canvas");
@@ -716,8 +725,6 @@ window.triggerOutro = function(directChoice = null) {
     if (!outroScreen) return;
 
     if (video) video.pause();
-
-    // Remove background particles loop
     if (bgCanvas) bgCanvas.remove();
 
     outroScreen.classList.remove("hidden");
@@ -725,14 +732,12 @@ window.triggerOutro = function(directChoice = null) {
     outroScreen.classList.add("revealed");
 
     if (directChoice) {
-        // If clicking final button on scrollable page, skip letter sequence and show choice resolution immediately
         const letter = document.getElementById("outro-letter-content");
         if (letter) {
             letter.classList.add("hidden");
         }
         runFinalResolution(directChoice);
     } else {
-        // Start sequential timing for cinematic letter reading
         runCinematicLetterSequence();
     }
 };
@@ -745,48 +750,40 @@ function runCinematicLetterSequence() {
 
     if (!seq1 || !seq2 || !seq3 || !seq4) return;
 
-    // Sequence 1: Fades in immediately
     seq1.classList.add("active");
 
-    // Sequence 1 Fades out (8s read time + 1.2s delay)
     setTimeout(() => {
         seq1.classList.remove("active");
         seq1.classList.add("hidden-fade");
     }, 9200);
 
-    // Sequence 2 Fades in (1.5s transition gap)
     setTimeout(() => {
         seq2.classList.remove("hidden");
         seq2.offsetHeight;
         seq2.classList.add("active");
     }, 10700);
 
-    // Sequence 2 Fades out (6s read time)
     setTimeout(() => {
         seq2.classList.remove("active");
         seq2.classList.add("hidden-fade");
     }, 16700);
 
-    // Sequence 3 Fades in (1.5s transition gap)
     setTimeout(() => {
         seq3.classList.remove("hidden");
         seq3.offsetHeight;
         seq3.classList.add("active");
     }, 18200);
 
-    // Sequence 3 Fades out (8s read time)
     setTimeout(() => {
         seq3.classList.remove("active");
         seq3.classList.add("hidden-fade");
     }, 26200);
 
-    // Sequence 4 Fades in & unlocks the glass choice buttons (1.5s transition gap)
     setTimeout(() => {
         seq4.classList.remove("hidden");
         seq4.offsetHeight;
         seq4.classList.add("active");
         
-        // Ensure buttons fade in properly inside sequence 4 container
         const buttons = seq4.querySelector(".outro-buttons");
         if (buttons) {
             buttons.style.opacity = "1";
@@ -813,11 +810,55 @@ function runFinalResolution(choice) {
             resBelieve.offsetHeight;
             resBelieve.classList.add("revealed");
             runOutroParticles("believe");
+
+            // Reveal FaceTime button actions after 2s
+            setTimeout(() => {
+                const actions = document.getElementById("facetime-actions");
+                if (actions) {
+                    actions.classList.remove("hidden");
+                    actions.offsetHeight;
+                    actions.classList.add("revealed");
+                }
+            }, 2000);
+
+            // Reveal cursive permanent signature after 4.5s
+            setTimeout(() => {
+                const loveMsg = document.getElementById("believe-love-msg");
+                if (loveMsg) {
+                    loveMsg.classList.remove("hidden");
+                    loveMsg.offsetHeight;
+                    loveMsg.classList.add("revealed");
+                }
+            }, 4500);
+
         } else if (choice === "close" && resClose) {
             resClose.classList.remove("hidden");
             resClose.offsetHeight;
             resClose.classList.add("revealed");
             runOutroParticles("close");
+
+            // Closure Sequence: Fade out text, wait 2s, slowly display permanent cursive
+            setTimeout(() => {
+                const textWrapper = document.getElementById("close-text-wrapper");
+                if (textWrapper) {
+                    textWrapper.classList.add("fade-out");
+                    
+                    setTimeout(() => {
+                        textWrapper.classList.add("hidden");
+                        
+                        // Wait 2 seconds (total 2s after fadeout finishes), then show cursive
+                        setTimeout(() => {
+                            const loveMsg = document.getElementById("close-love-msg");
+                            if (loveMsg) {
+                                loveMsg.classList.remove("hidden");
+                                loveMsg.offsetHeight;
+                                loveMsg.classList.add("revealed");
+                            }
+                        }, 2000);
+
+                    }, 1800); // Wait for opacity transition to complete
+                }
+            }, 3500);
         }
     }, 800);
 }
@@ -851,7 +892,7 @@ function runOutroParticles(choice) {
             this.speedY = Math.sin(angle) * speed;
             
             this.size = Math.random() * 2 + 1;
-            this.gravity = choice === "believe" ? -0.015 : 0.01; // float up for love, down for close
+            this.gravity = choice === "believe" ? -0.015 : 0.01;
             this.opacity = 1;
             this.fade = choice === "believe" ? (Math.random() * 0.007 + 0.003) : (Math.random() * 0.009 + 0.005);
             
@@ -882,7 +923,6 @@ function runOutroParticles(choice) {
             ctx.shadowColor = `rgba(212, 175, 55, ${this.opacity * 0.5})`;
 
             if (this.isHeart) {
-                // Draw vector heart
                 ctx.beginPath();
                 ctx.moveTo(0, 0);
                 ctx.bezierCurveTo(-5, -5, -10, 0, -10, 5);

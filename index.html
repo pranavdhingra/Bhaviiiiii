@@ -21,7 +21,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Caveat:wght@400..700&display=swap" rel="stylesheet">
 
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="style.css">
@@ -70,13 +70,13 @@
             </div>
         </section>
 
-        <!-- SECTION 2: Our First Chapter -->
+        <!-- SECTION 2: Best Day Of My Life. (RENAMED FROM Our First Chapter) -->
         <section id="chapter-1-section" class="section text-section reveal-on-scroll">
             <div class="container">
-                <h2 class="section-title">Our First Chapter</h2>
+                <h2 class="section-title">Best Day Of My Life.</h2>
                 <div class="story-image-block">
-                    <div class="story-image-container">
-                        <img data-src="assets/images/memory1.jpeg" alt="Our First Chapter" class="story-image lazy-load">
+                    <div class="story-image-container blurred-bg-container edge-to-edge-mobile">
+                        <img data-src="assets/images/memory1.jpeg" alt="Best Day Of My Life" class="story-image lazy-load">
                     </div>
                     <p class="story-caption font-serif">
                         "Some places become beautiful because of where they are.<br>
@@ -91,7 +91,7 @@
             <div class="container">
                 <h2 class="section-title">The Days I'll Always Smile About</h2>
                 <div class="story-image-block">
-                    <div class="story-image-container">
+                    <div class="story-image-container blurred-bg-container edge-to-edge-mobile">
                         <img data-src="assets/images/memory2.jpeg" alt="Days I Always Smile About" class="story-image lazy-load">
                     </div>
                     <p class="story-caption font-serif">
@@ -107,7 +107,7 @@
             <div class="container">
                 <h2 class="section-title">The Version Of Us I Never Want To Forget</h2>
                 <div class="story-image-block">
-                    <div class="story-image-container">
+                    <div class="story-image-container blurred-bg-container edge-to-edge-mobile">
                         <img data-src="assets/images/memory3.jpeg" alt="Version Of Us I Never Want To Forget" class="story-image lazy-load">
                     </div>
                     <p class="story-caption font-serif">
@@ -123,8 +123,8 @@
             <div class="container">
                 <h2 class="section-title">One Of My Favourite Memories</h2>
                 <div class="cute-call-block">
-                    <!-- Elegant simulated call mockup framing -->
-                    <div class="cute-call-frame">
+                    <!-- Elegant call frame with blurred backdrop mapping -->
+                    <div class="cute-call-frame blurred-bg-container edge-to-edge-mobile">
                         <div class="call-glow-border"></div>
                         <img data-src="assets/images/memory4.jpeg" alt="Favourite Memory Call" class="call-screenshot lazy-load">
                         <div class="call-overlay-badge">
@@ -168,7 +168,7 @@
                 <h2 class="section-title">Something I Never Want To Forget</h2>
                 
                 <div class="diary-open-container">
-                    <div class="diary-open-page zoomable-page">
+                    <div class="diary-open-page zoomable-page edge-to-edge-mobile">
                         <img data-src="assets/images/song1.jpeg" alt="Song Page 1" class="diary-open-image lazy-load" id="song-img-1">
                         <div class="diary-hover-hint">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -180,7 +180,7 @@
                             <span>Click to Zoom Page 1</span>
                         </div>
                     </div>
-                    <div class="diary-open-page zoomable-page">
+                    <div class="diary-open-page zoomable-page edge-to-edge-mobile">
                         <img data-src="assets/images/song2.jpeg" alt="Song Page 2" class="diary-open-image lazy-load" id="song-img-2">
                         <div class="diary-hover-hint">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -201,12 +201,12 @@
             </div>
         </section>
 
-        <!-- SECTION 8: Final Memory (Emotional Climax Video) -->
+        <!-- SECTION 8: Final Memory (Emotional Climax Video - REDUCED & CONTAINED) -->
         <section id="video-section" class="section video-section reveal-on-scroll">
             <div class="container">
                 <h2 class="section-title">Our Final Memory</h2>
                 
-                <div class="video-container" id="video-container">
+                <div class="video-container blurred-bg-container edge-to-edge-mobile" id="video-container">
                     <video id="final-video" class="final-video" src="assets/videos/final-memory.mp4" playsinline preload="auto" muted></video>
                     
                     <!-- Tap to play / Unmute Overlay -->
@@ -231,7 +231,6 @@
         
         <!-- Outro Step 1: Cinematic Ending Letter -->
         <div class="outro-content" id="outro-letter-content">
-            <!-- Text Sequences (Revealed programmatically one by one) -->
             <div class="outro-letter-text" id="outro-text-seq-1">
                 <p class="outro-line font-serif italic">I don't know if this changes anything.</p>
                 <p class="outro-line font-serif italic">Maybe it won't.</p>
@@ -275,14 +274,43 @@
         </div>
 
         <!-- Outro Step 2: Final Resolution Screens -->
+        <!-- YES RESOLUTION: FaceTime & WhatsApp Fallbacks -->
         <div class="outro-resolution hidden" id="resolution-believe">
-            <h1 class="resolution-title font-serif">Thank you for believing.</h1>
-            <p class="resolution-p highlight-gold">Let's write our next chapter when you're ready.</p>
+            <div class="resolution-text-wrapper" id="believe-text-wrapper">
+                <p class="resolution-p font-serif">Thank you...</p>
+                <p class="resolution-p font-serif">This is all I wanted.</p>
+                <p class="resolution-p font-serif">If you're ready...</p>
+                <p class="resolution-p font-serif highlight-gold">I'd love to hear your voice.</p>
+            </div>
+            
+            <div class="resolution-actions hidden" id="facetime-actions">
+                <a href="facetime://9996500577" id="facetime-btn" class="glass-btn">
+                    <span class="btn-text">📞 FaceTime Me</span>
+                </a>
+                <a href="https://wa.me/919996500577" id="facetime-message-btn" class="glass-btn button-secondary hidden" target="_blank">
+                    <span class="btn-text">💬 Message Me</span>
+                </a>
+            </div>
+            
+            <!-- Cursive Permanent Signature -->
+            <div class="final-love-message hidden" id="believe-love-msg">
+                <span class="love-text font-handwritten">I loveee youuuu so muchhhh</span>
+                <span class="love-hearts">❤️❤️❤️</span>
+            </div>
         </div>
         
+        <!-- NO RESOLUTION: Closure & Twinkling Cursive Signature -->
         <div class="outro-resolution hidden" id="resolution-close">
-            <h1 class="resolution-title font-serif">Take care of yourself.</h1>
-            <p class="resolution-p highlight-gold">Always.</p>
+            <div class="resolution-text-wrapper" id="close-text-wrapper">
+                <h1 class="resolution-title font-serif">Take care of yourself.</h1>
+                <p class="resolution-p highlight-gold">Always.</p>
+            </div>
+            
+            <!-- Cursive Permanent Signature -->
+            <div class="final-love-message hidden" id="close-love-msg">
+                <span class="love-text font-handwritten">I loveee youuuu so muchhhh</span>
+                <span class="love-hearts">❤️❤️❤️</span>
+            </div>
         </div>
     </div>
 
