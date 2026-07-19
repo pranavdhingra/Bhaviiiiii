@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="A personal letter and collection of memories built with understanding, love, and gratitude.">
     <title>For Bhavi</title>
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="For Bhavi">
-    <meta property="og:description" content="A personal letter and collection of memories built with understanding, love, and gratitude.">
+    <meta property="og:description" content="A personal letter and collection of memories.">
     <meta property="og:image" content="assets/images/hero.jpeg">
 
     <!-- Twitter -->
@@ -70,11 +70,12 @@
             </div>
         </section>
 
-        <!-- SECTION 2: Best Day Of My Life. (RENAMED FROM Our First Chapter) -->
+        <!-- SECTION 2: Best Day Of My Life -->
         <section id="chapter-1-section" class="section text-section reveal-on-scroll">
             <div class="container">
                 <h2 class="section-title">Best Day Of My Life.</h2>
                 <div class="story-image-block">
+                    <!-- Keep blurred-bg-container ONLY on memory1 to prevent face cropping -->
                     <div class="story-image-container blurred-bg-container edge-to-edge-mobile">
                         <img data-src="assets/images/memory1.jpeg" alt="Best Day Of My Life" class="story-image lazy-load">
                     </div>
@@ -91,7 +92,8 @@
             <div class="container">
                 <h2 class="section-title">The Days I'll Always Smile About</h2>
                 <div class="story-image-block">
-                    <div class="story-image-container blurred-bg-container edge-to-edge-mobile">
+                    <!-- Removed blurred-bg-container to restore premium large size -->
+                    <div class="story-image-container edge-to-edge-mobile">
                         <img data-src="assets/images/memory2.jpeg" alt="Days I Always Smile About" class="story-image lazy-load">
                     </div>
                     <p class="story-caption font-serif">
@@ -107,7 +109,8 @@
             <div class="container">
                 <h2 class="section-title">The Version Of Us I Never Want To Forget</h2>
                 <div class="story-image-block">
-                    <div class="story-image-container blurred-bg-container edge-to-edge-mobile">
+                    <!-- Removed blurred-bg-container to restore premium large size -->
+                    <div class="story-image-container edge-to-edge-mobile">
                         <img data-src="assets/images/memory3.jpeg" alt="Version Of Us I Never Want To Forget" class="story-image lazy-load">
                     </div>
                     <p class="story-caption font-serif">
@@ -118,13 +121,13 @@
             </div>
         </section>
 
-        <!-- SECTION 5: One Of My Favourite Memories (Playful & Cute Call Frame) -->
+        <!-- SECTION 5: One Of My Favourite Memories -->
         <section id="cute-call-section" class="section text-section reveal-on-scroll">
             <div class="container">
                 <h2 class="section-title">One Of My Favourite Memories</h2>
                 <div class="cute-call-block">
-                    <!-- Elegant call frame with blurred backdrop mapping -->
-                    <div class="cute-call-frame blurred-bg-container edge-to-edge-mobile">
+                    <!-- Removed blurred-bg-container to restore premium large size -->
+                    <div class="cute-call-frame edge-to-edge-mobile">
                         <div class="call-glow-border"></div>
                         <img data-src="assets/images/memory4.jpeg" alt="Favourite Memory Call" class="call-screenshot lazy-load">
                         <div class="call-overlay-badge">
@@ -141,7 +144,7 @@
             </div>
         </section>
 
-        <!-- SECTION 6: My Favourite Picture Of You (Cinematic Fullscreen Section) -->
+        <!-- SECTION 6: My Favourite Picture Of You -->
         <section id="fav-picture-section" class="section fav-picture-section">
             <div class="fav-picture-bg" id="fav-pic-bg"></div>
             <div class="fav-picture-overlay"></div>
@@ -162,7 +165,7 @@
             </div>
         </section>
 
-        <!-- SECTION 7: The Birthday Song (Two Staged Diary Pages) -->
+        <!-- SECTION 7: Birthday Song -->
         <section id="song-section" class="section forget-section reveal-on-scroll">
             <div class="container-small">
                 <h2 class="section-title">Something I Never Want To Forget</h2>
@@ -201,12 +204,12 @@
             </div>
         </section>
 
-        <!-- SECTION 8: Final Memory (Emotional Climax Video - REDUCED & CONTAINED) -->
+        <!-- SECTION 8: Final Memory Video (Contained Centered Card - NO breakout class) -->
         <section id="video-section" class="section video-section reveal-on-scroll">
             <div class="container">
                 <h2 class="section-title">Our Final Memory</h2>
                 
-                <div class="video-container blurred-bg-container edge-to-edge-mobile" id="video-container">
+                <div class="video-container blurred-bg-container" id="video-container">
                     <video id="final-video" class="final-video" src="assets/videos/final-memory.mp4" playsinline preload="auto" muted></video>
                     
                     <!-- Tap to play / Unmute Overlay -->

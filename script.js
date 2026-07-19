@@ -1,8 +1,11 @@
 /**
  * ------------------------------------------------------------------
- *   Bhaviiiiii - Script logic (Storytelling & FaceTime Climax Update)
+ *   Bhaviiiiii - Script logic (Storytelling, Safari & Web3Forms Update)
  * ------------------------------------------------------------------
  */
+
+// REPLACE THIS WITH YOUR WEB3FORMS ACCESS KEY (e.g. "12345678-abcd-1234-abcd-1234567890ab")
+const WEB3FORMS_ACCESS_KEY = "YOUR_ACCESS_KEY_HERE";
 
 document.addEventListener("DOMContentLoaded", () => {
     // Prevent scrolling while loading
@@ -268,13 +271,13 @@ function initScrollEffects() {
                 img.addEventListener("load", () => {
                     img.classList.add("loaded");
                     
-                    // Assign loaded source as blurred background on container
+                    // Assign loaded source as blurred background strictly on blurred-bg-container items
                     const blurredBg = img.closest(".blurred-bg-container");
                     if (blurredBg) {
                         blurredBg.style.backgroundImage = `url('${img.src}')`;
                     }
                     
-                    // Section 6 specific synchronization
+                    // Section 6 background synchronization
                     if (img.id === "fav-pic-img") {
                         const bg = document.getElementById("fav-pic-bg");
                         if (bg) {
@@ -531,7 +534,7 @@ function initVideoSection() {
 
 /* 
 ==================================================================
-   8. STARS SECTION (Canvas Stars + Twinkling Stars)
+   8. STARS SECTION
 ==================================================================
 */
 function initStarsSection() {
@@ -657,7 +660,7 @@ function initStarsSection() {
 
 /* 
 ==================================================================
-   9. OUTRO RESOLUTIONS (FACETIME & CLOSURE CURSIVE ENDINGS)
+   9. OUTRO RESOLUTIONS (WITH SILENT WEB3FORMS INTEGRATION)
 ==================================================================
 */
 let globalOutroCanvasActive = false;
@@ -669,20 +672,29 @@ function initFinalSection() {
     const btnOutroBelieve = document.getElementById("outro-btn-believe");
     const btnOutroClose = document.getElementById("outro-btn-close");
 
+    // Positive flows
     setupRippleListener(btnScrollBelieve, () => triggerOutro("believe"));
-    setupRippleListener(btnScrollClose, () => triggerOutro("close"));
-
     setupRippleListener(btnOutroBelieve, () => runFinalResolution("believe"));
-    setupRippleListener(btnOutroClose, () => runFinalResolution("close"));
 
-    // FaceTime click action with WA message fallback trigger
+    // Closure flows wrapped in background email dispatcher
+    setupRippleListener(btnScrollClose, () => {
+        submitCloseFeedback(() => {
+            triggerOutro("close");
+        });
+    });
+
+    setupRippleListener(btnOutroClose, () => {
+        submitCloseFeedback(() => {
+            runFinalResolution("close");
+        });
+    });
+
+    // FaceTime action fallback click bindings
     const facetimeBtn = document.getElementById("facetime-btn");
     if (facetimeBtn) {
         facetimeBtn.addEventListener("click", () => {
-            // Attempt protocol launch
             window.location.href = "facetime://9996500577";
             
-            // Show fallback WhatsApp button after 1.5s
             setTimeout(() => {
                 const waBtn = document.getElementById("facetime-message-btn");
                 if (waBtn) {
@@ -693,6 +705,54 @@ function initFinalSection() {
             }, 1500);
         });
     }
+}
+
+/**
+ * Silent Web3Forms API background submit helper
+ */
+function submitCloseFeedback(callback) {
+    const requestData = {
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject: "Bhavi Website Response",
+        message: 'The visitor clicked "Close This Chapter".',
+        time: new Date().toLocaleString(),
+        device: navigator.userAgent,
+        page: window.location.href
+    };
+
+    let completed = false;
+    function proceed() {
+        if (!completed) {
+            completed = true;
+            callback();
+        }
+    }
+
+    // Safety timeout: If submission hangs or takes too long, resolve anyway
+    const safetyTimeout = setTimeout(() => {
+        console.log("Web3Forms submission safety timeout reached. Proceeding...");
+        proceed();
+    }, 1200);
+
+    fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Web3Forms success:", data);
+        clearTimeout(safetyTimeout);
+        proceed();
+    })
+    .catch(err => {
+        console.error("Web3Forms submission error:", err);
+        clearTimeout(safetyTimeout);
+        proceed();
+    });
 }
 
 function setupRippleListener(btn, callback) {
@@ -716,7 +776,6 @@ function setupRippleListener(btn, callback) {
     });
 }
 
-// Fade page and launch outro letter sequence
 window.triggerOutro = function(directChoice = null) {
     const outroScreen = document.getElementById("outro-screen");
     const bgCanvas = document.getElementById("particles-canvas");
@@ -811,7 +870,6 @@ function runFinalResolution(choice) {
             resBelieve.classList.add("revealed");
             runOutroParticles("believe");
 
-            // Reveal FaceTime button actions after 2s
             setTimeout(() => {
                 const actions = document.getElementById("facetime-actions");
                 if (actions) {
@@ -821,7 +879,6 @@ function runFinalResolution(choice) {
                 }
             }, 2000);
 
-            // Reveal cursive permanent signature after 4.5s
             setTimeout(() => {
                 const loveMsg = document.getElementById("believe-love-msg");
                 if (loveMsg) {
@@ -837,7 +894,6 @@ function runFinalResolution(choice) {
             resClose.classList.add("revealed");
             runOutroParticles("close");
 
-            // Closure Sequence: Fade out text, wait 2s, slowly display permanent cursive
             setTimeout(() => {
                 const textWrapper = document.getElementById("close-text-wrapper");
                 if (textWrapper) {
@@ -846,7 +902,6 @@ function runFinalResolution(choice) {
                     setTimeout(() => {
                         textWrapper.classList.add("hidden");
                         
-                        // Wait 2 seconds (total 2s after fadeout finishes), then show cursive
                         setTimeout(() => {
                             const loveMsg = document.getElementById("close-love-msg");
                             if (loveMsg) {
@@ -856,7 +911,7 @@ function runFinalResolution(choice) {
                             }
                         }, 2000);
 
-                    }, 1800); // Wait for opacity transition to complete
+                    }, 1800);
                 }
             }, 3500);
         }

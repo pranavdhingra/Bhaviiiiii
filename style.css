@@ -52,19 +52,22 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    height: 100%;
 }
 
 body {
     overflow-x: hidden;
     position: relative;
-    min-height: 100vh;
+    min-height: 100%;
+    min-height: -webkit-fill-available;
     background-color: var(--bg-color);
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
-/* Hide scrollbars but keep functionality when page is loading */
+/* Prevent scrolling while loading */
 body.loading {
     overflow: hidden;
-    height: 100vh;
+    height: 100dvh;
 }
 
 a {
@@ -76,6 +79,7 @@ img {
     max-width: 100%;
     height: auto;
     display: block;
+    image-rendering: -webkit-optimize-contrast;
 }
 
 button {
@@ -86,7 +90,7 @@ button {
     cursor: pointer;
 }
 
-/* Typography Utility */
+/* Typography Utilities */
 .font-serif {
     font-family: var(--font-serif);
 }
@@ -121,7 +125,7 @@ button {
     padding: 140px 0;
     position: relative;
     z-index: 2;
-    min-height: 100vh;
+    min-height: 100dvh; /* Safari dynamic viewport height */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -189,7 +193,6 @@ button {
     transform: translateY(20px);
 }
 
-/* Fades text in and out dynamically */
 .text-fade-in-out {
     animation: fadeReveal 3.5s forwards var(--ease-apple);
 }
@@ -258,7 +261,6 @@ button {
     background: radial-gradient(circle at 50% 50%, #0c0c0c 0%, #030303 100%);
 }
 
-/* Global scroll progress bar on top */
 .scroll-progress-bar {
     position: fixed;
     top: 0;
@@ -276,7 +278,7 @@ button {
 ==================================================================
 */
 .hero-section {
-    height: 100vh;
+    height: 100dvh; /* Dynamic viewport support */
     width: 100%;
     display: flex;
     justify-content: center;
@@ -298,9 +300,9 @@ button {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    will-change: transform;
     transform: scale(1.05);
     transition: transform 12s ease-out;
+    object-position: center;
 }
 
 .hero-overlay {
@@ -345,7 +347,6 @@ button {
     letter-spacing: 0.02em;
 }
 
-/* Animations for load */
 .text-reveal {
     opacity: 0;
     transform: translateY(40px);
@@ -367,7 +368,6 @@ button {
     transition: opacity 1.5s var(--ease-apple) 1s, transform 1.5s var(--ease-apple) 1s, filter 1.5s var(--ease-apple) 1s;
 }
 
-/* Interactive Scroll Indicator */
 .scroll-indicator {
     position: absolute;
     bottom: 40px;
@@ -431,7 +431,7 @@ button {
 
 /* 
 ==================================================================
-   STORY BLOCKS (STORYTELLING FLOW)
+   STORY BLOCKS (RESTORED LARGE IMMERSIVE IMAGES)
 ==================================================================
 */
 .story-image-block {
@@ -461,10 +461,12 @@ button {
     transform: translateY(0);
 }
 
+/* Large and Immersive - object-fit cover is restored for memory2 & memory3 */
 .story-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     opacity: 0;
     filter: blur(20px);
     transition: opacity 1.6s var(--ease-apple), filter 1.6s var(--ease-apple), transform 1.2s var(--ease-apple);
@@ -500,10 +502,10 @@ button {
 
 /* 
 ==================================================================
-   PREMIUM DYNAMIC BLURRED BACKDROP CONTAINERS (PREVENT CROPPING)
+   PREMIUM DYNAMIC BLURRED BACKDROP CONTAINERS (MEMORY 1 ONLY)
 ==================================================================
 */
-.blurred-bg-container {
+.story-image-container.blurred-bg-container {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -513,7 +515,7 @@ button {
     background-color: #020202;
 }
 
-.blurred-bg-container::before {
+.story-image-container.blurred-bg-container::before {
     content: '';
     position: absolute;
     top: -10%;
@@ -524,23 +526,23 @@ button {
     filter: blur(25px) brightness(0.35);
     z-index: 0;
     pointer-events: none;
-    transition: opacity 0.8s ease-in-out;
 }
 
-/* Sharp foreground elements centered on top */
-.blurred-bg-container img {
+/* Sharp contained overlay for memory1 inside blurred container */
+.story-image-container.blurred-bg-container .story-image {
     position: relative;
     z-index: 1;
     width: 100%;
     height: 100%;
-    object-fit: contain !important; /* Fit inside the bounding wrapper, NEVER crop faces */
+    object-fit: contain !important; /* Contain strictly on memory1 */
     border-radius: 12px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65);
+    object-position: center;
 }
 
 /* 
 ==================================================================
-   CUTE CALL SCREEN FRAME (SECTION 5)
+   CUTE CALL SCREEN FRAME (RESTORED TO IMMERSIVE LARGE SIZE)
 ==================================================================
 */
 .cute-call-block {
@@ -576,10 +578,12 @@ button {
     border-color: rgba(var(--gold-rgb), 0.25);
 }
 
+/* Large and Immersive cover fit restored on Facetime card */
 .call-screenshot {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     opacity: 0;
     filter: blur(20px);
     transition: opacity 1.6s var(--ease-apple), filter 1.6s var(--ease-apple);
@@ -638,12 +642,12 @@ button {
 
 /* 
 ==================================================================
-   MY FAVOURITE PICTURE OF YOU (SECTION 6)
+   MY FAVOURITE PICTURE OF YOU (RESTORED LARGE SCREEN COVER)
 ==================================================================
 */
 .fav-picture-section {
     position: relative;
-    height: 100vh;
+    height: 100dvh; /* Dynamic viewport support */
     width: 100vw;
     display: flex;
     justify-content: center;
@@ -663,7 +667,6 @@ button {
     filter: blur(40px) brightness(0.18);
     transform: scale(1.1);
     z-index: 0;
-    will-change: transform;
 }
 
 .fav-picture-overlay {
@@ -686,24 +689,18 @@ button {
     left: 0;
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     z-index: 1;
 }
 
+/* Cover mode restored to make it large, immersive, and full width */
 .fav-picture-img {
-    height: 80vh;
-    max-height: 80vh;
-    max-width: 90vw;
-    object-fit: contain;
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.95);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
     opacity: 0;
     filter: blur(25px);
     transition: opacity 1.8s var(--ease-apple), filter 1.8s var(--ease-apple);
-    will-change: transform;
 }
 
 .fav-picture-img.loaded {
@@ -765,7 +762,7 @@ button {
 
 /* 
 ==================================================================
-   SONG PAGES: DIARY LAYOUT (SECTION 7)
+   SONG PAGES: DIARY LAYOUT
 ==================================================================
 */
 .diary-open-container {
@@ -782,7 +779,7 @@ button {
     width: 100%;
     max-width: 600px;
     aspect-ratio: 3 / 4;
-    background: #fdfdf9; /* Ivory diary page background */
+    background: #fdfdf9;
     border-radius: 6px;
     border: 1px solid rgba(0,0,0,0.12);
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7),
@@ -813,11 +810,13 @@ button {
     background-color: rgba(220, 100, 100, 0.2);
 }
 
+/* Diary pages restored to larger, filling cover fit */
 .diary-open-image {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    mix-blend-mode: multiply; /* Blend image background texture */
+    object-fit: cover;
+    object-position: center;
+    mix-blend-mode: multiply;
     padding: 25px 30px 25px 40px;
     opacity: 0;
     filter: blur(15px);
@@ -839,9 +838,37 @@ button {
     transform: translateY(0);
 }
 
+.diary-hover-hint {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%, 10px);
+    background: rgba(10, 10, 10, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffffff;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-apple), transform 0.3s var(--ease-apple);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.diary-hover-hint svg {
+    width: 14px;
+    height: 14px;
+}
+
 /* 
 ==================================================================
-   SECTION 8: FINAL MEMORY VIDEO (CONTAINED & SLIGHTLY REDUCED)
+   SECTION 8: FINAL MEMORY VIDEO (CONTAINED SLIGHTLY SMALLER CARD)
 ==================================================================
 */
 .video-section {
@@ -851,21 +878,38 @@ button {
 .video-container {
     position: relative;
     width: 90%;
-    max-width: 760px; /* Reduced dimension to fit entire canvas */
+    max-width: 660px; /* Reduced dimension to guarantee full visibility */
     aspect-ratio: 16 / 9;
     margin: 0 auto;
     border-radius: 24px;
     overflow: hidden;
     border: 1px solid var(--glass-border);
-    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9),
-                0 0 40px rgba(var(--gold-rgb), 0.15);
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.95),
+                0 0 45px rgba(var(--gold-rgb), 0.15);
     opacity: 0;
     transform: translateY(40px);
     transition: opacity var(--transition-slow), transform var(--transition-slow);
+    background-color: #000000;
 }
 
+/* Blurred background behind the video using hero.jpeg */
 .video-container.blurred-bg-container {
-    background-image: url('assets/images/hero.jpeg'); /* Fallback blur frame backdrop */
+    background-image: url('assets/images/hero.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.video-container.blurred-bg-container::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background: inherit;
+    filter: blur(25px) brightness(0.3);
+    z-index: 0;
+    pointer-events: none;
 }
 
 .reveal-on-scroll.revealed .video-container {
@@ -877,20 +921,21 @@ button {
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: contain !important; /* Fit within bounding box, NEVER crop video bounds */
+    object-fit: contain !important; /* Contain perfectly, never crop video contents */
     position: relative;
     z-index: 1;
+    border-radius: 24px;
 }
 
-/* Video Unmute overlay layout */
 .video-audio-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     z-index: 20;
     display: flex;
     justify-content: center;
@@ -1008,7 +1053,6 @@ button {
     pointer-events: none;
 }
 
-/* Click ripple element */
 .btn-ripple {
     position: absolute;
     border-radius: 50%;
@@ -1036,7 +1080,7 @@ button {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh; /* Safari viewport fix */
     background-color: #000000;
     z-index: 10000;
     display: flex;
@@ -1046,6 +1090,7 @@ button {
     opacity: 0;
     visibility: hidden;
     transition: opacity 2.5s ease-in-out, visibility 2.5s ease-in-out;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .outro-screen.revealed {
@@ -1063,7 +1108,6 @@ button {
     pointer-events: none;
 }
 
-/* Step 1: Ending Letter container */
 .outro-content {
     text-align: center;
     position: relative;
@@ -1085,7 +1129,6 @@ button {
     pointer-events: none;
 }
 
-/* Sequential display text containers */
 .outro-letter-text {
     opacity: 0;
     visibility: hidden;
@@ -1145,7 +1188,6 @@ button {
     margin-top: 30px;
 }
 
-/* Step 2: Resolution overlay screens */
 .outro-resolution {
     position: absolute;
     top: 50%;
@@ -1194,7 +1236,6 @@ button {
     text-shadow: 0 0 20px rgba(var(--gold-rgb), 0.4);
 }
 
-/* FaceTime Calls Actions Container */
 .resolution-actions {
     display: flex;
     flex-direction: column;
@@ -1282,151 +1323,43 @@ button {
 
 /* 
 ==================================================================
-   MOBILE-FIRST / EDGE-TO-EDGE MEDIA BREAKOUT RULES
+   FULLSCREEN IMAGE ZOOM MODAL (SAFARI FIX)
 ==================================================================
 */
-
-/* Breakout class to force edge-to-edge images on mobile viewports */
-@media (max-width: 480px) {
-    .edge-to-edge-mobile {
-        width: 100vw !important;
-        position: relative !important;
-        left: 50% !important;
-        right: 50% !important;
-        margin-left: -50vw !important;
-        margin-right: -50vw !important;
-        border-radius: 0 !important;
-        border-left: none !important;
-        border-right: none !important;
-    }
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh; /* Dynamic viewport fix */
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 11000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-medium), visibility var(--transition-medium);
+    overflow: hidden;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 /* 
 ==================================================================
-   RESPONSIVENESS (MEDIA QUERIES)
+   MOBILE-FIRST / SAFARI COMPATIBLE LAYOUT (NO HORIZONTAL SCROLL)
 ==================================================================
 */
 
-/* --- Small Laptops / Tablets Landscape (1024px) --- */
-@media (max-width: 1024px) {
-    .hero-title {
-        font-size: 4.2rem;
-    }
-    
-    .section-title {
-        font-size: 2.4rem;
-        margin-bottom: 50px;
-    }
-    
-    .story-caption {
-        font-size: 1.1rem;
-    }
-    
-    .fav-picture-img {
-        height: 75vh;
-        max-height: 75vh;
-    }
-    
-    .fav-p {
-        font-size: 1.2rem;
-    }
-    
-    .fav-p.highlight-gold {
-        font-size: 1.4rem;
-    }
-    
-    .video-container {
-        max-width: 85vw;
-    }
-}
-
-/* --- Tablets Portrait (768px) --- */
-@media (max-width: 768px) {
-    .section {
-        padding: 90px 0;
-    }
-    
-    .hero-title {
-        font-size: 3.5rem;
-        margin-bottom: 20px;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.05rem;
-        line-height: 1.7;
-    }
-    
-    .section-title {
-        font-size: 2.1rem;
-        margin-bottom: 40px;
-    }
-    
-    .story-caption {
-        font-size: 1.05rem;
-        line-height: 1.8;
-    }
-    
-    .story-image-container {
-        aspect-ratio: 4 / 3;
-        margin-bottom: 30px;
-    }
-    
-    .cute-call-frame {
-        max-width: 380px;
-    }
-    
-    .fav-picture-img {
-        height: 65vh;
-        max-height: 65vh;
-    }
-    
-    .diary-open-page {
-        aspect-ratio: 3 / 4;
-        max-width: 500px;
-    }
-    
-    .diary-open-image {
-        padding: 20px 25px 20px 35px;
-    }
-    
-    .glass-btn {
-        min-width: 220px;
-        padding: 14px 28px;
-        font-size: 0.9rem;
-    }
-    
-    .outro-line {
-        font-size: 1.1rem;
-        line-height: 1.9;
-    }
-    
-    .outro-line.highlight-gold {
-        font-size: 1.2rem;
-    }
-    
-    .resolution-title {
-        font-size: 2rem;
-    }
-    
-    .resolution-p {
-        font-size: 1.05rem;
-    }
-}
-
-/* --- Mobiles (480px and below) --- */
 @media (max-width: 480px) {
+    /* Main Layout */
+    .container {
+        width: 100% !important;
+        padding: 0 16px !important;
+    }
+    
     .section {
         padding: 70px 0;
-    }
-    
-    .hero-title {
-        font-size: 2.8rem;
-        margin-bottom: 15px;
-    }
-    
-    .hero-subtitle {
-        font-size: 0.95rem;
-        line-height: 1.6;
+        min-height: 100dvh;
     }
     
     .section-title {
@@ -1435,17 +1368,21 @@ button {
         padding: 0 10px;
     }
     
-    /* Apply edge-to-edge breakout behaviors */
-    .story-image-container {
-        width: 100vw !important;
-        position: relative !important;
-        left: 50% !important;
-        right: 50% !important;
-        margin-left: -50vw !important;
-        margin-right: -50vw !important;
+    /* Mathematical breakouts for edge-to-edge content on iPhone Safari */
+    .edge-to-edge-mobile {
+        width: calc(100% + 32px) !important;
+        margin-left: -16px !important;
+        margin-right: -16px !important;
         border-radius: 0 !important;
         border-left: none !important;
         border-right: none !important;
+        left: 0 !important;
+        right: 0 !important;
+        position: relative !important;
+    }
+    
+    /* Immersive Large aspect ratios for Section 3, 4, 5 */
+    .story-image-container {
         aspect-ratio: 4 / 3;
         margin-bottom: 25px;
     }
@@ -1453,15 +1390,14 @@ button {
     .story-caption {
         font-size: 0.95rem;
         line-height: 1.7;
+        padding: 0 10px;
     }
     
+    /* Facetime call frame mock scale */
     .cute-call-frame {
-        width: 100vw !important;
-        position: relative !important;
-        left: 50% !important;
-        right: 50% !important;
-        margin-left: -50vw !important;
-        margin-right: -50vw !important;
+        width: calc(100% + 32px) !important;
+        margin-left: -16px !important;
+        margin-right: -16px !important;
         border-radius: 0 !important;
         border-left: none !important;
         border-right: none !important;
@@ -1470,10 +1406,11 @@ button {
         margin-bottom: 25px;
     }
     
+    /* Immersive cover for Section 6 fullscreen graphic */
     .fav-picture-img {
-        height: 60vh;
-        max-height: 60vh;
-        max-width: 100vw;
+        height: 100dvh;
+        max-height: 100dvh;
+        width: 100vw;
         border-radius: 0;
         border: none;
     }
@@ -1488,13 +1425,11 @@ button {
         font-size: 1.2rem;
     }
     
+    /* Staged diary vertical pages aspect ratios */
     .diary-open-page {
-        width: 100vw !important;
-        position: relative !important;
-        left: 50% !important;
-        right: 50% !important;
-        margin-left: -50vw !important;
-        margin-right: -50vw !important;
+        width: calc(100% + 32px) !important;
+        margin-left: -16px !important;
+        margin-right: -16px !important;
         border-radius: 0 !important;
         border-left: none !important;
         border-right: none !important;
@@ -1510,21 +1445,25 @@ button {
         font-size: 1rem;
         margin-top: 20px;
         line-height: 1.7;
+        padding: 0 10px;
     }
     
+    /* Climax Video Container - Centered, non-breakout card on mobile */
     .video-container {
-        width: 100vw !important;
-        position: relative !important;
-        left: 50% !important;
-        right: 50% !important;
-        margin-left: -50vw !important;
-        margin-right: -50vw !important;
-        border-radius: 0 !important;
-        border-left: none !important;
-        border-right: none !important;
+        width: 90% !important;
+        max-width: 400px;
         aspect-ratio: 16 / 9;
+        margin: 0 auto !important;
+        border-radius: 16px !important;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+        border: 1px solid var(--glass-border);
     }
     
+    .final-video {
+        border-radius: 16px;
+    }
+    
+    /* Outro typography adjustments */
     .outro-buttons {
         flex-direction: column;
         width: 100%;
@@ -1579,5 +1518,114 @@ button {
     
     .final-love-message {
         margin-top: 35px;
+    }
+}
+
+/* 
+==================================================================
+   RESPONSIVENESS (SMALL LAPTOPS & PORTRAITS)
+==================================================================
+*/
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: 4.2rem;
+    }
+    
+    .section-title {
+        font-size: 2.4rem;
+        margin-bottom: 50px;
+    }
+    
+    .story-caption {
+        font-size: 1.1rem;
+    }
+    
+    .fav-picture-img {
+        height: 75vh;
+        max-height: 75vh;
+    }
+    
+    .fav-p {
+        font-size: 1.2rem;
+    }
+    
+    .fav-p.highlight-gold {
+        font-size: 1.4rem;
+    }
+    
+    .video-container {
+        max-width: 85vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .section {
+        padding: 90px 0;
+    }
+    
+    .hero-title {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+    
+    .section-title {
+        font-size: 2.1rem;
+        margin-bottom: 40px;
+    }
+    
+    .story-caption {
+        font-size: 1.05rem;
+        line-height: 1.8;
+    }
+    
+    .story-image-container {
+        aspect-ratio: 16 / 10;
+        margin-bottom: 30px;
+    }
+    
+    .cute-call-frame {
+        max-width: 380px;
+    }
+    
+    .fav-picture-img {
+        height: 65vh;
+        max-height: 65vh;
+    }
+    
+    .diary-open-page {
+        aspect-ratio: 3 / 4;
+        max-width: 500px;
+    }
+    
+    .diary-open-image {
+        padding: 20px 25px 20px 35px;
+    }
+    
+    .glass-btn {
+        min-width: 220px;
+        padding: 14px 28px;
+        font-size: 0.9rem;
+    }
+    
+    .outro-line {
+        font-size: 1.1rem;
+        line-height: 1.9;
+    }
+    
+    .outro-line.highlight-gold {
+        font-size: 1.2rem;
+    }
+    
+    .resolution-title {
+        font-size: 2rem;
+    }
+    
+    .resolution-p {
+        font-size: 1.05rem;
     }
 }
