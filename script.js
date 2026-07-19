@@ -1,6 +1,6 @@
 /**
  * ------------------------------------------------------------------
- *   Bhaviiiiii - Script logic
+ *   Bhaviiiiii - Script logic (Storytelling & Cinematic Update)
  * ------------------------------------------------------------------
  */
 
@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
     initMouseGlow();
     initBackgroundParticles();
     initScrollEffects();
-    initMusicPlayer();
+    initFavouritePictureSequence();
+    initDiaryModal();
     initVideoSection();
     initStarsSection();
     initFinalSection();
@@ -35,7 +36,7 @@ function initLoadingScreen() {
         if (mainContent) mainContent.classList.remove("hidden");
         document.body.classList.remove("loading");
 
-        // Subtle scale-in effect on hero image on entry
+        // Scale-in effect on hero image on entry
         if (heroImage) {
             heroImage.style.transform = "scale(1)";
         }
@@ -43,9 +44,11 @@ function initLoadingScreen() {
         // Trigger hero text reveal
         setTimeout(() => {
             const reveals = document.querySelectorAll(".hero-content .text-reveal, .hero-content .text-reveal-delay-1, .hero-content .text-reveal-delay-2");
-            reveals.forEach(el => el.style.opacity = "1");
-            reveals.forEach(el => el.style.transform = "translateY(0)");
-            reveals.forEach(el => el.style.filter = "blur(0)");
+            reveals.forEach(el => {
+                el.style.opacity = "1";
+                el.style.transform = "translateY(0)";
+                el.style.filter = "blur(0)";
+            });
         }, 300);
 
         // Remove loading screen from DOM after transition
@@ -66,7 +69,6 @@ function initMouseGlow() {
     let glowX = 0, glowY = 0;
     let isMoving = false;
 
-    // Smooth glow trailing logic (lerp)
     function updateGlowPosition() {
         if (!mouseGlow) return;
         const dx = mouseX - glowX;
@@ -95,42 +97,6 @@ function initMouseGlow() {
     window.addEventListener("mouseout", () => {
         if (mouseGlow) mouseGlow.classList.remove("active");
         isMoving = false;
-    });
-
-    // --- 3D Tilt Card Effects ---
-    const tiltCards = document.querySelectorAll(".tilt-card");
-
-    tiltCards.forEach(card => {
-        const glow = card.querySelector(".card-glow");
-
-        card.addEventListener("mousemove", (e) => {
-            const rect = card.getBoundingClientRect();
-            
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            if (glow) {
-                glow.style.left = `${x}px`;
-                glow.style.top = `${y}px`;
-            }
-
-            const width = rect.width;
-            const height = rect.height;
-            const centerX = width / 2;
-            const centerY = height / 2;
-            
-            const maxRotationX = 8;
-            const maxRotationY = 8;
-
-            const rotateX = ((centerY - y) / centerY) * maxRotationX;
-            const rotateY = ((x - centerX) / centerX) * maxRotationY;
-
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-        });
-
-        card.addEventListener("mouseleave", () => {
-            card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
-        });
     });
 }
 
@@ -163,21 +129,21 @@ function initBackgroundParticles() {
         reset() {
             this.x = Math.random() * width;
             this.y = height + Math.random() * 20;
-            this.size = Math.random() * 2.5 + 0.5;
-            this.speedY = Math.random() * 0.4 + 0.15;
-            this.speedX = Math.random() * 0.3 - 0.15;
-            this.opacity = Math.random() * 0.4 + 0.15;
+            this.size = Math.random() * 2.2 + 0.4;
+            this.speedY = Math.random() * 0.35 + 0.12;
+            this.speedX = Math.random() * 0.25 - 0.125;
+            this.opacity = Math.random() * 0.35 + 0.15;
             this.swayAngle = Math.random() * Math.PI * 2;
-            this.swaySpeed = Math.random() * 0.01 + 0.005;
+            this.swaySpeed = Math.random() * 0.01 + 0.004;
         }
 
         update() {
             this.y -= this.speedY;
             this.swayAngle += this.swaySpeed;
-            this.x += this.speedX + Math.sin(this.swayAngle) * 0.15;
+            this.x += this.speedX + Math.sin(this.swayAngle) * 0.12;
 
             if (this.y < 100) {
-                this.opacity -= 0.005;
+                this.opacity -= 0.004;
             }
 
             if (this.y < 0 || this.opacity <= 0 || this.x < -10 || this.x > width + 10) {
@@ -190,12 +156,12 @@ function initBackgroundParticles() {
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
             ctx.shadowBlur = this.size * 2;
-            ctx.shadowColor = "rgba(212, 175, 55, 0.3)";
+            ctx.shadowColor = "rgba(212, 175, 55, 0.25)";
             ctx.fill();
         }
     }
 
-    const particleCount = Math.min(60, Math.floor((width * height) / 18000));
+    const particleCount = Math.min(50, Math.floor((width * height) / 22000));
     for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
     }
@@ -257,21 +223,21 @@ function initScrollEffects() {
 
     if (scrollIndicator) {
         scrollIndicator.addEventListener("click", () => {
-            const nextSec = document.getElementById("understanding-section");
+            const nextSec = document.getElementById("chapter-1-section");
             if (nextSec) {
                 nextSec.scrollIntoView({ behavior: "smooth" });
             }
         });
     }
 
-    // Scroll Reveal Observers
+    // Scroll Reveal Intersection Observer
     const revealElements = document.querySelectorAll(".reveal-on-scroll");
     const revealTitles = document.querySelectorAll(".section-title");
 
     const observerOptions = {
         root: null,
         rootMargin: "0px",
-        threshold: 0.1
+        threshold: 0.08
     };
 
     const revealObserver = new IntersectionObserver((entries, observer) => {
@@ -305,100 +271,212 @@ function initScrollEffects() {
                 img.src = img.getAttribute("data-src");
                 img.addEventListener("load", () => {
                     img.classList.add("loaded");
+                    
+                    // Specific trigger for Section 6 background blur synching
+                    if (img.id === "fav-pic-img") {
+                        const bg = document.getElementById("fav-pic-bg");
+                        if (bg) {
+                            bg.style.backgroundImage = `url('${img.src}')`;
+                            bg.style.opacity = "1";
+                        }
+                    }
                 });
                 observer.unobserve(img);
             }
         });
-    }, { rootMargin: "200px 0px" });
+    }, { rootMargin: "250px 0px" });
 
     lazyImages.forEach(img => imageObserver.observe(img));
 }
 
 /* 
 ==================================================================
-   5. FLOATING MUSIC PLAYER & FADE CONTROLLERS
+   5. MY FAVOURITE PICTURE SEQUENCE (SECTION 6)
 ==================================================================
 */
-function initMusicPlayer() {
-    const audio = document.getElementById("bg-music");
-    const toggleBtn = document.getElementById("music-toggle");
-    const playIcon = document.getElementById("icon-play");
-    const pauseIcon = document.getElementById("icon-pause");
-    const progressCircle = document.querySelector(".progress-ring__circle");
+function initFavouritePictureSequence() {
+    const favSection = document.getElementById("fav-picture-section");
+    const text1 = document.getElementById("fav-text-1");
+    const text2 = document.getElementById("fav-text-2");
 
-    if (!audio || !toggleBtn) return;
+    if (!favSection || !text1 || !text2) return;
 
-    // Load saved music position from localStorage
-    const savedTime = localStorage.getItem("bhavi_music_time");
-    if (savedTime) {
-        audio.currentTime = parseFloat(savedTime);
-    }
+    let sequenceTriggered = false;
 
-    // Save playing position periodically
-    audio.addEventListener("timeupdate", () => {
-        if (!audio.paused) {
-            localStorage.setItem("bhavi_music_time", audio.currentTime);
-        }
-
-        // SVG progress ring calculations
-        const percentage = audio.currentTime / audio.duration;
-        const radius = progressCircle.r.baseVal.value;
-        const circumference = 2 * Math.PI * radius;
-        const offset = circumference - (percentage * circumference);
-        progressCircle.style.strokeDashoffset = isNaN(offset) ? circumference : offset;
-    });
-
-    function playAudio() {
-        audio.play().then(() => {
-            playIcon.classList.add("hidden");
-            pauseIcon.classList.remove("hidden");
-        }).catch(err => {
-            console.log("Audio autoplay prevented: ", err);
-        });
-    }
-
-    function pauseAudio() {
-        audio.pause();
-        playIcon.classList.remove("hidden");
-        pauseIcon.classList.add("hidden");
-    }
-
-    toggleBtn.addEventListener("click", () => {
-        if (audio.paused) {
-            playAudio();
-        } else {
-            pauseAudio();
-        }
-    });
-
-    // Smooth fade controller for clashing audio tracks
-    window.fadeBgMusic = function(targetVolume, durationMs) {
-        clearInterval(audio.fadeInterval);
-        const startVolume = audio.volume;
-        const diff = targetVolume - startVolume;
-        const steps = 25;
-        const stepTime = durationMs / steps;
-        let currentStep = 0;
-
-        audio.fadeInterval = setInterval(() => {
-            currentStep++;
-            audio.volume = Math.max(0, Math.min(1, startVolume + (diff * (currentStep / steps))));
-            if (currentStep >= steps) {
-                clearInterval(audio.fadeInterval);
-                audio.volume = targetVolume;
-                if (targetVolume === 0 && !audio.paused) {
-                    audio.pause();
-                } else if (targetVolume > 0 && audio.paused) {
-                    audio.play().catch(e => console.log("Play failed on fade in:", e));
-                }
+    const favObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !sequenceTriggered) {
+                sequenceTriggered = true;
+                runTextSequence();
             }
-        }, stepTime);
-    };
+        });
+    }, { threshold: 0.35 });
+
+    favObserver.observe(favSection);
+
+    function runTextSequence() {
+        // Step 1: Fade in first text block after zoom animation starts
+        setTimeout(() => {
+            text1.classList.add("active");
+        }, 1200);
+
+        // Step 2: Fade out first text block after 6s
+        setTimeout(() => {
+            text1.classList.remove("active");
+        }, 7200);
+
+        // Step 3: Fade in second text block after first fades out fully (1.5s gap)
+        setTimeout(() => {
+            text2.classList.add("active");
+        }, 8700);
+    }
 }
 
 /* 
 ==================================================================
-   6. CINEMATIC VIDEO (AUTOPLAY / VISIBILITY / UNMUTE OVERLAY)
+   6. DIARY STACKED PAGES ZOOM MODAL (SECTION 7)
+==================================================================
+*/
+function initDiaryModal() {
+    const pages = document.querySelectorAll(".diary-open-image");
+    const modal = document.getElementById("image-modal");
+    const modalImg = document.getElementById("modal-img");
+    const modalClose = document.getElementById("modal-close");
+    const modalWrapper = document.getElementById("modal-wrapper");
+
+    const btnIn = document.getElementById("zoom-in");
+    const btnOut = document.getElementById("zoom-out");
+    const btnReset = document.getElementById("zoom-reset");
+
+    if (pages.length === 0 || !modal || !modalImg) return;
+
+    let scale = 1;
+    let translateX = 0;
+    let translateY = 0;
+    let isDragging = false;
+    let startX = 0, startY = 0;
+
+    function applyTransforms() {
+        modalImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    }
+
+    function resetTransforms() {
+        scale = 1;
+        translateX = 0;
+        translateY = 0;
+        applyTransforms();
+    }
+
+    pages.forEach(page => {
+        page.closest(".diary-open-page").addEventListener("click", () => {
+            modalImg.src = page.src;
+            modal.classList.add("open");
+            modal.setAttribute("aria-hidden", "false");
+            document.body.style.overflow = "hidden";
+            resetTransforms();
+        });
+    });
+
+    function closeModal() {
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        resetTransforms();
+    }
+
+    modalClose.addEventListener("click", closeModal);
+    
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal || e.target === modalWrapper) {
+            closeModal();
+        }
+    });
+
+    window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.classList.contains("open")) {
+            closeModal();
+        }
+    });
+
+    function zoom(amount) {
+        scale = Math.max(0.7, Math.min(5, scale + amount));
+        applyTransforms();
+    }
+
+    btnIn.addEventListener("click", () => zoom(0.3));
+    btnOut.addEventListener("click", () => zoom(-0.3));
+    btnReset.addEventListener("click", resetTransforms);
+
+    modalWrapper.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        const zoomStep = 0.08;
+        if (e.deltaY < 0) {
+            zoom(zoomStep);
+        } else {
+            zoom(-zoomStep);
+        }
+    }, { passive: false });
+
+    modalWrapper.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        isDragging = true;
+        startX = e.clientX - translateX;
+        startY = e.clientY - translateY;
+    });
+
+    window.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        translateX = e.clientX - startX;
+        translateY = e.clientY - startY;
+        applyTransforms();
+    });
+
+    window.addEventListener("mouseup", () => {
+        isDragging = false;
+    });
+
+    let initialTouchDist = 0;
+
+    modalWrapper.addEventListener("touchstart", (e) => {
+        if (e.touches.length === 1) {
+            isDragging = true;
+            startX = e.touches[0].clientX - translateX;
+            startY = e.touches[0].clientY - translateY;
+        } else if (e.touches.length === 2) {
+            isDragging = false;
+            initialTouchDist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+        }
+    });
+
+    modalWrapper.addEventListener("touchmove", (e) => {
+        if (isDragging && e.touches.length === 1) {
+            translateX = e.touches[0].clientX - startX;
+            translateY = e.touches[0].clientY - startY;
+            applyTransforms();
+        } else if (e.touches.length === 2) {
+            e.preventDefault();
+            const currentDist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            const scaleFactor = currentDist / initialTouchDist;
+            scale = Math.max(0.7, Math.min(5, scale * scaleFactor));
+            initialTouchDist = currentDist;
+            applyTransforms();
+        }
+    }, { passive: false });
+
+    modalWrapper.addEventListener("touchend", () => {
+        isDragging = false;
+    });
+}
+
+/* 
+==================================================================
+   7. FINAL VIDEO SCROLL CONTROLS & AUTO-END TIMEOUT
 ==================================================================
 */
 function initVideoSection() {
@@ -410,17 +488,12 @@ function initVideoSection() {
 
     let userInteracted = false;
 
-    // Scroll Observer to play when visible and pause when leaving
     const videoObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 attemptPlayVideo();
             } else {
                 video.pause();
-                // Restore background music if we scroll away
-                if (!video.muted && window.fadeBgMusic) {
-                    window.fadeBgMusic(0.8, 1000);
-                }
             }
         });
     }, { threshold: 0.15 });
@@ -428,53 +501,45 @@ function initVideoSection() {
     videoObserver.observe(container);
 
     function attemptPlayVideo() {
-        // Attempt playing unmuted first
+        // Try unmuted play first
         video.muted = false;
         video.play().then(() => {
-            // Unmuted playback allowed! Hide click overlay
             overlay.classList.add("hidden");
-            if (window.fadeBgMusic) {
-                window.fadeBgMusic(0, 1000); // Fade out clashing music
-            }
         }).catch(() => {
-            // Blocked. Play muted and reveal "Tap once" overlay
+            // Autoplay blocked. Play muted, display "Tap once" overlay
             video.muted = true;
             if (overlay) overlay.classList.remove("hidden");
-            video.play().catch(e => console.log("Muted play failed:", e));
+            video.play().catch(e => console.log("Muted autoplay failed:", e));
         });
     }
 
-    // Tap to unmute / toggle play handler
     container.addEventListener("click", () => {
+        userInteracted = true;
         if (video.muted) {
-            userInteracted = true;
             video.muted = false;
             if (overlay) overlay.classList.add("hidden");
-            if (window.fadeBgMusic) {
-                window.fadeBgMusic(0, 1000); // Fade background music completely
-            }
             video.play().catch(e => console.log(e));
         } else {
-            // Regular play/pause toggle when already unmuted
+            // Toggle play/pause state
             if (video.paused) {
                 video.play();
-                if (window.fadeBgMusic) window.fadeBgMusic(0, 800);
             } else {
                 video.pause();
-                if (window.fadeBgMusic) window.fadeBgMusic(0.8, 800);
             }
         }
     });
 
-    // When video completes, trigger the transition screen
+    // Wait exactly 2 seconds on end before triggering the outro screen
     video.addEventListener("ended", () => {
-        triggerOutro();
+        setTimeout(() => {
+            triggerOutro();
+        }, 2000);
     });
 }
 
 /* 
 ==================================================================
-   7. STARS SECTION (Canvas Stars + Twinkling Stars)
+   8. STARS SECTION (Canvas Stars + Twinkling Stars)
 ==================================================================
 */
 function initStarsSection() {
@@ -600,7 +665,7 @@ function initStarsSection() {
 
 /* 
 ==================================================================
-   8. FINAL SECTION & OUTRO RESOLUTION TRANSITIONS
+   9. FINAL SECTION BUTTONS & TYPOGRAPHY TIMING ORCHESTRATION
 ==================================================================
 */
 let globalOutroCanvasActive = false;
@@ -612,10 +677,11 @@ function initFinalSection() {
     const btnOutroBelieve = document.getElementById("outro-btn-believe");
     const btnOutroClose = document.getElementById("outro-btn-close");
 
-    // Add ripples and route clicks
+    // Click handler for scrolling page final buttons
     setupRippleListener(btnScrollBelieve, () => triggerOutro("believe"));
     setupRippleListener(btnScrollClose, () => triggerOutro("close"));
 
+    // Click handler for outro overlay screen final choice buttons
     setupRippleListener(btnOutroBelieve, () => runFinalResolution("believe"));
     setupRippleListener(btnOutroClose, () => runFinalResolution("close"));
 }
@@ -641,7 +707,7 @@ function setupRippleListener(btn, callback) {
     });
 }
 
-// Unified transition to outro black screen
+// Transitions to black and starts the sequential text sequence
 window.triggerOutro = function(directChoice = null) {
     const outroScreen = document.getElementById("outro-screen");
     const bgCanvas = document.getElementById("particles-canvas");
@@ -649,28 +715,85 @@ window.triggerOutro = function(directChoice = null) {
 
     if (!outroScreen) return;
 
-    // Pause video & music
     if (video) video.pause();
-    if (window.fadeBgMusic) {
-        window.fadeBgMusic(0, 2000); // fade out completely
-    }
 
-    // Stop global particle background
+    // Remove background particles loop
     if (bgCanvas) bgCanvas.remove();
 
     outroScreen.classList.remove("hidden");
-    outroScreen.offsetHeight; // force redraw
+    outroScreen.offsetHeight;
     outroScreen.classList.add("revealed");
 
     if (directChoice) {
-        // Skip letter and go directly to resolution choice
+        // If clicking final button on scrollable page, skip letter sequence and show choice resolution immediately
         const letter = document.getElementById("outro-letter-content");
         if (letter) {
             letter.classList.add("hidden");
         }
         runFinalResolution(directChoice);
+    } else {
+        // Start sequential timing for cinematic letter reading
+        runCinematicLetterSequence();
     }
 };
+
+function runCinematicLetterSequence() {
+    const seq1 = document.getElementById("outro-text-seq-1");
+    const seq2 = document.getElementById("outro-text-seq-2");
+    const seq3 = document.getElementById("outro-text-seq-3");
+    const seq4 = document.getElementById("outro-text-seq-4");
+
+    if (!seq1 || !seq2 || !seq3 || !seq4) return;
+
+    // Sequence 1: Fades in immediately
+    seq1.classList.add("active");
+
+    // Sequence 1 Fades out (8s read time + 1.2s delay)
+    setTimeout(() => {
+        seq1.classList.remove("active");
+        seq1.classList.add("hidden-fade");
+    }, 9200);
+
+    // Sequence 2 Fades in (1.5s transition gap)
+    setTimeout(() => {
+        seq2.classList.remove("hidden");
+        seq2.offsetHeight;
+        seq2.classList.add("active");
+    }, 10700);
+
+    // Sequence 2 Fades out (6s read time)
+    setTimeout(() => {
+        seq2.classList.remove("active");
+        seq2.classList.add("hidden-fade");
+    }, 16700);
+
+    // Sequence 3 Fades in (1.5s transition gap)
+    setTimeout(() => {
+        seq3.classList.remove("hidden");
+        seq3.offsetHeight;
+        seq3.classList.add("active");
+    }, 18200);
+
+    // Sequence 3 Fades out (8s read time)
+    setTimeout(() => {
+        seq3.classList.remove("active");
+        seq3.classList.add("hidden-fade");
+    }, 26200);
+
+    // Sequence 4 Fades in & unlocks the glass choice buttons (1.5s transition gap)
+    setTimeout(() => {
+        seq4.classList.remove("hidden");
+        seq4.offsetHeight;
+        seq4.classList.add("active");
+        
+        // Ensure buttons fade in properly inside sequence 4 container
+        const buttons = seq4.querySelector(".outro-buttons");
+        if (buttons) {
+            buttons.style.opacity = "1";
+            buttons.style.transform = "translateY(0)";
+        }
+    }, 27700);
+}
 
 function runFinalResolution(choice) {
     const letter = document.getElementById("outro-letter-content");
@@ -728,7 +851,7 @@ function runOutroParticles(choice) {
             this.speedY = Math.sin(angle) * speed;
             
             this.size = Math.random() * 2 + 1;
-            this.gravity = choice === "believe" ? -0.015 : 0.01; // Floating upward for love, falling for close
+            this.gravity = choice === "believe" ? -0.015 : 0.01; // float up for love, down for close
             this.opacity = 1;
             this.fade = choice === "believe" ? (Math.random() * 0.007 + 0.003) : (Math.random() * 0.009 + 0.005);
             
@@ -759,7 +882,7 @@ function runOutroParticles(choice) {
             ctx.shadowColor = `rgba(212, 175, 55, ${this.opacity * 0.5})`;
 
             if (this.isHeart) {
-                // Vector heart
+                // Draw vector heart
                 ctx.beginPath();
                 ctx.moveTo(0, 0);
                 ctx.bezierCurveTo(-5, -5, -10, 0, -10, 5);
@@ -780,13 +903,11 @@ function runOutroParticles(choice) {
         }
     }
 
-    // Exploding burst
     const initialCount = choice === "believe" ? 140 : 80;
     for (let i = 0; i < initialCount; i++) {
         particles.push(new Sparkle(oWidth / 2, oHeight * 0.45));
     }
 
-    // Continuous floating dust stream
     const streamInterval = setInterval(() => {
         if (!globalOutroCanvasActive) {
             clearInterval(streamInterval);
@@ -794,10 +915,8 @@ function runOutroParticles(choice) {
         }
         if (particles.length < 250) {
             if (choice === "believe") {
-                // Rise from bottom
                 particles.push(new Sparkle(Math.random() * oWidth, oHeight + 10));
             } else {
-                // Muted ashes falling from top
                 particles.push(new Sparkle(Math.random() * oWidth, -10));
             }
         }

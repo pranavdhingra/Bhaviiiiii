@@ -10,13 +10,13 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="For Bhavi">
     <meta property="og:description" content="A personal letter and collection of memories built with understanding, love, and gratitude.">
-    <meta property="og:image" content="assets/images/hero.jpg">
+    <meta property="og:image" content="assets/images/hero.jpeg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:title" content="For Bhavi">
     <meta property="twitter:description" content="A personal letter and collection of memories.">
-    <meta property="twitter:image" content="assets/images/hero.jpg">
+    <meta property="twitter:image" content="assets/images/hero.jpeg">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,29 +45,6 @@
     <!-- Canvas for Floating Particles (Global Background) -->
     <canvas id="particles-canvas" class="particles-canvas"></canvas>
 
-    <!-- Floating Audio Player -->
-    <div id="audio-container" class="audio-container">
-        <audio id="bg-music" src="assets/music/song.mp3" loop prefetch="auto"></audio>
-        <button id="music-toggle" class="music-toggle" aria-label="Toggle Music Player">
-            <span class="music-icon-wrapper">
-                <!-- Play Icon -->
-                <svg id="icon-play" class="music-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                </svg>
-                <!-- Pause Icon -->
-                <svg id="icon-pause" class="music-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="6" y="4" width="4" height="16"></rect>
-                    <rect x="14" y="4" width="4" height="16"></rect>
-                </svg>
-            </span>
-            <!-- Progress Ring -->
-            <svg class="progress-ring" width="48" height="48">
-                <circle class="progress-ring__circle" stroke="var(--gold-color)" stroke-width="2" fill="transparent" r="22" cx="24" cy="24"/>
-            </svg>
-        </button>
-        <span class="music-tooltip">Listen to our song</span>
-    </div>
-
     <!-- Scroll Indicator Global Progress -->
     <div id="scroll-progress-bar" class="scroll-progress-bar"></div>
 
@@ -77,7 +54,7 @@
         <!-- SECTION 1: Full screen hero -->
         <section id="hero-section" class="section hero-section">
             <div class="hero-image-wrapper">
-                <img src="assets/images/hero.jpg" alt="Bhavi Hero" class="hero-image" id="hero-img">
+                <img src="assets/images/hero.jpeg" alt="Bhavi Hero" class="hero-image" id="hero-img">
                 <div class="hero-overlay"></div>
             </div>
             <div class="hero-content">
@@ -93,229 +70,207 @@
             </div>
         </section>
 
-        <!-- SECTION 2: Something I Finally Understood -->
-        <section id="understanding-section" class="section text-section reveal-on-scroll">
+        <!-- SECTION 2: Our First Chapter -->
+        <section id="chapter-1-section" class="section text-section reveal-on-scroll">
+            <div class="container">
+                <h2 class="section-title">Our First Chapter</h2>
+                <div class="story-image-block">
+                    <div class="story-image-container">
+                        <img data-src="assets/images/memory1.jpeg" alt="Our First Chapter" class="story-image lazy-load">
+                    </div>
+                    <p class="story-caption font-serif">
+                        "Some places become beautiful because of where they are.<br>
+                        This one became beautiful because you were there."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: The Days I'll Always Smile About -->
+        <section id="chapter-2-section" class="section text-section reveal-on-scroll">
+            <div class="container">
+                <h2 class="section-title">The Days I'll Always Smile About</h2>
+                <div class="story-image-block">
+                    <div class="story-image-container">
+                        <img data-src="assets/images/memory2.jpeg" alt="Days I Always Smile About" class="story-image lazy-load">
+                    </div>
+                    <p class="story-caption font-serif">
+                        "I don't remember every conversation.<br>
+                        But I remember exactly how happy I felt."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: The Version Of Us I Never Want To Forget -->
+        <section id="chapter-3-section" class="section text-section reveal-on-scroll">
+            <div class="container">
+                <h2 class="section-title">The Version Of Us I Never Want To Forget</h2>
+                <div class="story-image-block">
+                    <div class="story-image-container">
+                        <img data-src="assets/images/memory3.jpeg" alt="Version Of Us I Never Want To Forget" class="story-image lazy-load">
+                    </div>
+                    <p class="story-caption font-serif">
+                        "If I could pause one feeling forever...<br>
+                        it would probably look something like this."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: One Of My Favourite Memories (Playful & Cute Call Frame) -->
+        <section id="cute-call-section" class="section text-section reveal-on-scroll">
+            <div class="container">
+                <h2 class="section-title">One Of My Favourite Memories</h2>
+                <div class="cute-call-block">
+                    <!-- Elegant simulated call mockup framing -->
+                    <div class="cute-call-frame">
+                        <div class="call-glow-border"></div>
+                        <img data-src="assets/images/memory4.jpeg" alt="Favourite Memory Call" class="call-screenshot lazy-load">
+                        <div class="call-overlay-badge">
+                            <span class="call-heart-icon">❤️</span>
+                            <span class="call-time-text">Connected</span>
+                        </div>
+                    </div>
+                    <p class="story-caption font-serif">
+                        "This still makes me smile.<br>
+                        It's one of those tiny moments that probably meant nothing to the world...<br>
+                        but somehow became everything to me."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: My Favourite Picture Of You (Cinematic Fullscreen Section) -->
+        <section id="fav-picture-section" class="section fav-picture-section">
+            <div class="fav-picture-bg" id="fav-pic-bg"></div>
+            <div class="fav-picture-overlay"></div>
+            
+            <div class="fav-picture-wrapper">
+                <img data-src="assets/images/memory5.jpeg" alt="My Favourite Picture of You" class="fav-picture-img lazy-load" id="fav-pic-img">
+            </div>
+            
+            <div class="container-small fav-picture-content">
+                <div class="fav-text-block active" id="fav-text-1">
+                    <p class="fav-p font-serif">I know you wanted to post this picture.</p>
+                    <p class="fav-p font-serif">And I never let you.</p>
+                    <p class="fav-p font-serif highlight-gold">Maybe because a selfish part of me wanted this smile to stay my favourite little secret.</p>
+                </div>
+                <div class="fav-text-block" id="fav-text-2">
+                    <p class="fav-p font-serif highlight-gold">I still think this is one of the most beautiful photographs I've ever seen.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: The Birthday Song (Two Staged Diary Pages) -->
+        <section id="song-section" class="section forget-section reveal-on-scroll">
             <div class="container-small">
-                <h2 class="section-title">Something I Finally Understood</h2>
-                <div class="understanding-card">
-                    <p class="understanding-p">You were never asking for perfection.</p>
-                    <p class="understanding-p">You were asking not to keep asking.</p>
-                    <p class="understanding-p">You wanted to feel heard.</p>
-                    <p class="understanding-p">You wanted me to notice the little things without you reminding me every time.</p>
-                    <div class="card-divider"></div>
-                    <p class="understanding-p highlight">I understand that now.</p>
-                    <p class="understanding-p highlight">I wish I had understood it sooner.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 3: Our Memories -->
-        <section id="memories-section" class="section memories-section reveal-on-scroll">
-            <div class="container">
-                <h2 class="section-title">Our Memories</h2>
-                
-                <div class="memory-block">
-                    <div class="memory-image-container">
-                        <img data-src="assets/images/memory1.jpg" alt="Memory One" class="memory-image lazy-load">
-                    </div>
-                    <p class="memory-caption">The moments where time felt like it completely stood still.</p>
-                </div>
-
-                <div class="memory-block">
-                    <div class="memory-image-container">
-                        <img data-src="assets/images/memory2.jpg" alt="Memory Two" class="memory-image lazy-load">
-                    </div>
-                    <p class="memory-caption">Laughs that filled the silence and turned ordinary days into adventures.</p>
-                </div>
-
-                <div class="memory-block">
-                    <div class="memory-image-container">
-                        <img data-src="assets/images/memory3.jpg" alt="Memory Three" class="memory-image lazy-load">
-                    </div>
-                    <p class="memory-caption">Every shared dream, soft gaze, and beautiful place we touched together.</p>
-                </div>
-
-                <div class="memory-block">
-                    <div class="memory-image-container">
-                        <img data-src="assets/images/memory4.jpg" alt="Memory Four" class="memory-image lazy-load">
-                    </div>
-                    <p class="memory-caption">Moments that shaped my heart and carved deep paths inside my soul.</p>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- SECTION 4: The Little Things -->
-        <section id="little-things-section" class="section little-things-section reveal-on-scroll">
-            <div class="container">
-                <h2 class="section-title">The Little Things</h2>
-                <div class="grid-container">
-                    <div class="glass-card tilt-card" id="card-mussoorie">
-                        <div class="card-glow"></div>
-                        <h3 class="card-title">Mussoorie</h3>
-                        <p class="card-description">Mist on the hills, warm tea, and running away from the crowded city just to listen to the mountains together.</p>
-                    </div>
-                    <div class="glass-card tilt-card" id="card-goa">
-                        <div class="card-glow"></div>
-                        <h3 class="card-title">Goa</h3>
-                        <p class="card-description">Golden sunsets over quiet beaches, salt on our skin, and talking about the future with the ocean roaring in front of us.</p>
-                    </div>
-                    <div class="glass-card tilt-card" id="card-bike-rides">
-                        <div class="card-glow"></div>
-                        <h3 class="card-title">Bike Rides</h3>
-                        <p class="card-description">Cold wind in our faces, your hands warm around me, and the comforting silent rhythm of riding without a destination.</p>
-                    </div>
-                    <div class="glass-card tilt-card" id="card-long-walks">
-                        <div class="card-glow"></div>
-                        <h3 class="card-title">Long Walks</h3>
-                        <p class="card-description">Losing track of blocks, passing streetlights, and talking about anything and everything until our feet grew tired.</p>
-                    </div>
-                    <div class="glass-card tilt-card" id="card-barista">
-                        <div class="card-glow"></div>
-                        <h3 class="card-title">Barista</h3>
-                        <p class="card-description">Sharing a corner table, smelling roasted coffee, and the quiet comfort of being together even in absolute silence.</p>
-                    </div>
-                    <div class="glass-card tilt-card" id="card-late-night">
-                        <div class="card-glow"></div>
-                        <h3 class="card-title">Late Night Conversations</h3>
-                        <p class="card-description">Whispering thoughts under the dark sky when the whole world was fast asleep, showing each other our truest selves.</p>
-                    </div>
-                    <div class="glass-card tilt-card" id="card-laughing">
-                        <div class="card-glow"></div>
-                        <h3 class="card-title">Laughing Like Kids</h3>
-                        <p class="card-description">Silly jokes that only we understood, uncontrollable giggles, and forgetting all responsibilities, even if just for a minute.</p>
-                    </div>
-                    <div class="glass-card tilt-card" id="card-goodbyes">
-                        <div class="card-glow"></div>
-                        <h3 class="card-title">Every Goodbye That Became Another Hello</h3>
-                        <p class="card-description">Never wanting to let go, staying just five minutes more, and turning every parting into a promise of returning soon.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 5: Something I Never Want To Forget (CINEMATIC VIDEO) -->
-        <section id="forget-section" class="section forget-section reveal-on-scroll">
-            <div class="container">
                 <h2 class="section-title">Something I Never Want To Forget</h2>
+                
+                <div class="diary-open-container">
+                    <div class="diary-open-page zoomable-page">
+                        <img data-src="assets/images/song1.jpeg" alt="Song Page 1" class="diary-open-image lazy-load" id="song-img-1">
+                        <div class="diary-hover-hint">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                <line x1="11" y1="8" x2="11" y2="14"></line>
+                                <line x1="8" y1="11" x2="14" y2="11"></line>
+                            </svg>
+                            <span>Click to Zoom Page 1</span>
+                        </div>
+                    </div>
+                    <div class="diary-open-page zoomable-page">
+                        <img data-src="assets/images/song2.jpeg" alt="Song Page 2" class="diary-open-image lazy-load" id="song-img-2">
+                        <div class="diary-hover-hint">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                <line x1="11" y1="8" x2="11" y2="14"></line>
+                                <line x1="8" y1="11" x2="14" y2="11"></line>
+                            </svg>
+                            <span>Click to Zoom Page 2</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="diary-caption font-serif">
+                    "I wrote these words long before I knew<br>
+                    how precious these memories would become."
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 8: Final Memory (Emotional Climax Video) -->
+        <section id="video-section" class="section video-section reveal-on-scroll">
+            <div class="container">
+                <h2 class="section-title">Our Final Memory</h2>
                 
                 <div class="video-container" id="video-container">
                     <video id="final-video" class="final-video" src="assets/videos/final-memory.mp4" playsinline preload="auto" muted></video>
                     
-                    <!-- Tap to Unmute Overlay -->
+                    <!-- Tap to play / Unmute Overlay -->
                     <div id="video-audio-overlay" class="video-audio-overlay hidden">
                         <div class="audio-overlay-content">
                             <svg class="audio-overlay-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
                                 <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
                             </svg>
-                            <span>Tap once to hear the final memory</span>
+                            <span>Tap once to play our final memory.</span>
                         </div>
                     </div>
-                </div>
-                <p class="video-caption">"I wrote this for your birthday."</p>
-            </div>
-        </section>
-
-        <!-- SECTION 6: Thank You -->
-        <section id="thankyou-section" class="section text-section reveal-on-scroll">
-            <div class="container-small">
-                <h2 class="section-title">Thank You</h2>
-                <div class="thankyou-card">
-                    <p class="thankyou-line font-serif">Thank you for every memory.</p>
-                    <p class="thankyou-line font-serif">Thank you for every smile.</p>
-                    <p class="thankyou-line font-serif">Thank you for making ordinary moments unforgettable.</p>
-                    <p class="thankyou-line font-serif">Thank you for becoming such a beautiful chapter of my life.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 7: If There Is One Thing... -->
-        <section id="stars-section" class="section stars-section">
-            <canvas id="stars-canvas" class="stars-canvas"></canvas>
-            <div class="stars-overlay"></div>
-            <div class="moon-element"></div>
-            <div class="stars-content">
-                <h2 class="stars-title reveal-on-scroll">If There Is One Thing...</h2>
-                <div class="stars-text reveal-on-scroll delay-text">
-                    <p class="stars-p">If there's one thing I hope you never doubt...</p>
-                    <p class="stars-p highlight-gold">it's that I loved you honestly.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- FINAL SECTION: Aurora Background -->
-        <section id="final-section" class="section final-section">
-            <!-- Canvas/CSS animated aurora container -->
-            <div class="aurora-bg">
-                <div class="aurora-wave aurora-wave-1"></div>
-                <div class="aurora-wave aurora-wave-2"></div>
-                <div class="aurora-wave aurora-wave-3"></div>
-                <div class="aurora-wave aurora-wave-4"></div>
-            </div>
-            <div class="final-overlay"></div>
-
-            <div class="container-small final-content">
-                <div class="final-letter">
-                    <p class="final-p">I don't know what tomorrow looks like.</p>
-                    <p class="final-p">Maybe life surprises us.</p>
-                    <p class="final-p">Maybe it doesn't.</p>
-                    <p class="final-p">I only wanted you to know that I finally understand why you became tired.</p>
-                    <p class="final-p">I'm sorry it took me so long to see it.</p>
-                    <p class="final-p">I genuinely hope life gives you everything you've ever dreamed of.</p>
-                    <p class="final-p">Thank you...</p>
-                    <p class="final-p final-closing">for everything.</p>
-                </div>
-
-                <!-- FINAL DUAL CHOICE BUTTONS -->
-                <div class="outro-buttons" id="final-scroll-buttons">
-                    <button id="final-btn-believe" class="outro-btn glass-btn">
-                        <span class="btn-ripple-container"></span>
-                        <span class="btn-text">❤️ Give Us One More Thought</span>
-                    </button>
-                    <button id="final-btn-close" class="outro-btn glass-btn button-secondary">
-                        <span class="btn-ripple-container"></span>
-                        <span class="btn-text">🤍 Close This Chapter</span>
-                    </button>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- Outro Fullscreen Screen (Revealed on Video End OR Final Button Click) -->
+    <!-- Outro Fullscreen Screen (Climax Transition) -->
     <div id="outro-screen" class="outro-screen hidden">
         <canvas id="outro-particles-canvas" class="outro-particles-canvas"></canvas>
         
-        <!-- Outro Step 1: Ending Letter and Buttons -->
+        <!-- Outro Step 1: Cinematic Ending Letter -->
         <div class="outro-content" id="outro-letter-content">
-            <div class="outro-letter-text">
-                <p class="outro-line font-serif italic">If there's even a small part of your heart</p>
-                <p class="outro-line font-serif italic">that still believes in us...</p>
-                <p class="outro-line highlight-gold font-serif spacing-bottom">please give us one more thought.</p>
-                
-                <p class="outro-line">Not because of this website.</p>
-                <p class="outro-line spacing-bottom">Not because of these memories.</p>
-                
-                <p class="outro-line">But because I finally understand</p>
-                <p class="outro-line highlight-gold spacing-bottom">what you were trying to tell me.</p>
-                
-                <p class="outro-line">If your answer is still no...</p>
-                <p class="outro-line spacing-bottom">I'll respect it.</p>
-                
-                <p class="outro-line">But if there's even the smallest chance...</p>
-                <p class="outro-line highlight-gold font-serif">I'd love to write one more chapter with you.</p>
+            <!-- Text Sequences (Revealed programmatically one by one) -->
+            <div class="outro-letter-text" id="outro-text-seq-1">
+                <p class="outro-line font-serif italic">I don't know if this changes anything.</p>
+                <p class="outro-line font-serif italic">Maybe it won't.</p>
+                <p class="outro-line font-serif spacing-bottom">I only wanted you to know</p>
+                <p class="outro-line font-serif">that I finally understand</p>
+                <p class="outro-line font-serif highlight-gold">what you were trying to tell me.</p>
+                <p class="outro-line spacing-top">You were never asking for too much.</p>
+                <p class="outro-line font-serif spacing-bottom">You were asking not to feel alone</p>
+                <p class="outro-line font-serif">while we were together.</p>
+                <p class="outro-line highlight-gold spacing-bottom">I'm sorry it took me so long to understand that.</p>
             </div>
-            
-            <div class="outro-buttons spacing-top">
-                <button id="outro-btn-believe" class="outro-btn glass-btn">
-                    <span class="btn-ripple-container"></span>
-                    <span class="btn-text">❤️ Give Us One More Thought</span>
-                </button>
-                <button id="outro-btn-close" class="outro-btn glass-btn button-secondary">
-                    <span class="btn-ripple-container"></span>
-                    <span class="btn-text">🤍 Close This Chapter</span>
-                </button>
+
+            <div class="outro-letter-text hidden" id="outro-text-seq-2">
+                <p class="outro-line font-serif italic">If there's even one conversation left for us...</p>
+                <p class="outro-line font-serif highlight-gold">please give it one more thought.</p>
+            </div>
+
+            <div class="outro-letter-text hidden" id="outro-text-seq-3">
+                <p class="outro-line">And if your answer is still no...</p>
+                <p class="outro-line highlight-gold">thank you.</p>
+                <p class="outro-line spacing-top">For every memory.</p>
+                <p class="outro-line">Every laugh.</p>
+                <p class="outro-line highlight-gold">Every little moment that quietly became a part of who I am.</p>
+            </div>
+
+            <div class="outro-letter-text hidden" id="outro-text-seq-4">
+                <p class="outro-line font-serif italic highlight-gold font-large">You will always be one of the most beautiful chapters of my life.</p>
+                
+                <!-- Dual Choice Glass Buttons -->
+                <div class="outro-buttons spacing-top">
+                    <button id="outro-btn-believe" class="outro-btn glass-btn">
+                        <span class="btn-ripple-container"></span>
+                        <span class="btn-text">❤️ Maybe One More Conversation</span>
+                    </button>
+                    <button id="outro-btn-close" class="outro-btn glass-btn button-secondary">
+                        <span class="btn-ripple-container"></span>
+                        <span class="btn-text">🤍 Close This Chapter</span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -329,6 +284,25 @@
             <h1 class="resolution-title font-serif">Take care of yourself.</h1>
             <p class="resolution-p highlight-gold">Always.</p>
         </div>
+    </div>
+
+    <!-- Fullscreen Image Zoom Modal for Song Pages -->
+    <div id="image-modal" class="image-modal" aria-hidden="true" role="dialog">
+        <button class="modal-close" id="modal-close" aria-label="Close modal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <div class="modal-content-wrapper" id="modal-wrapper">
+            <img src="" alt="Song Enlarge" class="modal-image" id="modal-img">
+        </div>
+        <div class="modal-zoom-controls">
+            <button id="zoom-in" class="zoom-btn" aria-label="Zoom In">+</button>
+            <button id="zoom-out" class="zoom-btn" aria-label="Zoom Out">-</button>
+            <button id="zoom-reset" class="zoom-btn" aria-label="Reset Zoom">Reset</button>
+        </div>
+        <div class="modal-instructions">Use scroll or pinch to zoom. Drag to move.</div>
     </div>
 
     <!-- Script File -->

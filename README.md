@@ -1,28 +1,32 @@
-# Romantic Website for Bhavi
+# Romantic Storytelling Website for Bhavi
 
-A luxury, minimal, Apple-inspired single-page romantic website built with HTML, Vanilla CSS, and JavaScript. The site includes a glassmorphic floating music player, interactive mouse glows, a customized particle background, and responsive galleries.
+A luxury, minimal, Apple-inspired single-page romantic website built like an elegant storytelling book. It features edge-to-edge mobile imagery, a custom polaroid call frame, a fullscreen picture zoom transition, double-stacked open diary pages, and a cinematic outro with dual-choice glassmorphic buttons.
 
 ---
 
 ## 📂 Asset Placement Guide
 
-Please place your high-quality media files in the designated paths within the `assets/` directory before deployment:
+Please place your high-quality media files inside the `assets/` folder using the exact filenames and paths listed below before deploying:
 
 | Asset Filename | Directory Path | Description |
 | :--- | :--- | :--- |
-| **`hero.jpg`** | `assets/images/hero.jpg` | Full-screen hero background image. Suggest high-contrast, centered framing. |
-| **`memory1.jpg`** | `assets/images/memory1.jpg` | First wide landscape memory image in the gallery. |
-| **`memory2.jpg`** | `assets/images/memory2.jpg` | Second wide landscape memory image in the gallery. |
-| **`memory3.jpg`** | `assets/images/memory3.jpg` | Third wide landscape memory image in the gallery. |
-| **`memory4.jpg`** | `assets/images/memory4.jpg` | Fourth wide landscape memory image in the gallery. |
-| **`song.jpg`** | `assets/images/song.jpg` | Photograph of the handwritten song. Keeps original ratio & unlocks fullscreen drag-and-zoom. |
-| **`song.mp3`** | `assets/music/song.mp3` | The audio file for the floating player. Keeps play state & playback position saved. |
+| **`hero.jpeg`** | `assets/images/hero.jpeg` | Full-screen hero background image. |
+| **`memory1.jpeg`** | `assets/images/memory1.jpeg` | Section: "Our First Chapter" |
+| **`memory2.jpeg`** | `assets/images/memory2.jpeg` | Section: "The Days I'll Always Smile About" |
+| **`memory3.jpeg`** | `assets/images/memory3.jpeg` | Section: "The Version Of Us I Never Want To Forget" |
+| **`memory4.jpeg`** | `assets/images/memory4.jpeg` | Section: "One Of My Favourite Memories" (Video call kiss screenshot) |
+| **`memory5.jpeg`** | `assets/images/memory5.jpeg` | Section: "My Favourite Picture Of You" (Fullscreen blurred background zoom) |
+| **`song1.jpeg`** | `assets/images/song1.jpeg` | Birthday Song Page 1 (Open diary page) |
+| **`song2.jpeg`** | `assets/images/song2.jpeg` | Birthday Song Page 2 (Open diary page) |
+| **`final-memory.mp4`** | `assets/videos/final-memory.mp4` | 18-second cinematic climax video (contains original audio) |
+
+*Note: The website is completely silent by design until the final video is viewed. There is no background audio (`song.mp3` is not used).*
 
 ---
 
 ## 💻 How to Run Locally
 
-Since the site uses canvas drawing, standard layout loading, and browser-safe HTML5 audio storage, it works best when served using a lightweight local web server.
+Since the site uses canvas drawing, scroll observers, and video media endpoints, serve it using a local web server.
 
 ### Option 1: Live Server (Recommended)
 If using **VS Code**:
@@ -50,51 +54,34 @@ Then open `http://localhost:8000` in your web browser.
 
 You can host this website completely for free on GitHub Pages:
 
-1. **Create a GitHub Repository**:
-   - Create a new public repository on GitHub (e.g., `for-bhavi`).
-2. **Push the Files to GitHub**:
-   - Run these terminal commands to link and upload your code:
+1. **Push your code to GitHub**:
+   - Link your local repository to your remote branch and push:
      ```bash
-     git remote add origin https://github.com/YOUR_GITHUB_USERNAME/for-bhavi.git
+     git remote add origin https://github.com/pranavdhingra/Bhaviiiiii.git
      git branch -M main
      git push -u origin main
      ```
-3. **Enable GitHub Pages**:
+2. **Enable GitHub Pages**:
    - Go to your repository settings on GitHub.
    - Click on the **Pages** tab on the left sidebar.
    - Under **Build and deployment**, select **Deploy from a branch**.
    - Choose the branch **`main`** and folder **`/ (root)`**, then click **Save**.
-4. **Access the Site**:
+3. **Access the Site**:
    - Within 1–2 minutes, your website will be live at:
-     `https://YOUR_GITHUB_USERNAME.github.io/for-bhavi/`
+     `https://pranavdhingra.github.io/Bhaviiiiii/`
 
 ---
 
 ## 📸 How to Update Images Later
 
-To replace any images in the future, simply follow these steps:
-1. Ensure the new image file is formatted as a `.jpg` (JPEG).
-2. Save it with the **exact same filename** (e.g., `memory1.jpg`).
-3. Replace the old file inside `assets/images/` with the new file.
+To replace any images in the future:
+1. Format the new image as a `.jpeg` or video as an `.mp4`.
+2. Save it with the **exact same filename** (e.g., `memory1.jpeg`).
+3. Replace the old file inside `assets/images/` or `assets/videos/` with the new file.
 4. Git commit and push the updated image:
    ```bash
-   git add assets/images/
-   git commit -m "Update memory photos"
+   git add assets/
+   git commit -m "Update gallery assets"
    git push origin main
    ```
    GitHub Pages will automatically rebuild and serve the new images.
-
----
-
-## ✨ Features Built-In
-
-1. **6.5s Loading Animation Screen**: Types out the intro lines before elegantly shifting and fading with blur reveals.
-2. **Smooth Parallax Scrolling**: The full-screen hero image scales and shifts coordinates synchronously with scroll speed.
-3. **Smooth Scroll Revelations**: Sections, cards, text, and captions transition in using Intersection Observers for 60 FPS performance.
-4. **Glassmorphism Tilt Cards**: The grids on Section 4 respond to mouse coordinates to rotate in 3D and draw highlight spotlights.
-5. **Interactive Floating Music Widget**: Remembers playback state and shows a round visual ring tracking song duration progress.
-6. **Double-Twinkling Star Canvas**: Section 7 draws canvas stars that flash at random speeds with shooting star streaks.
-7. **Pinch-to-Zoom Modal**: Pinch or scroll zoom on the handwritten song image, enabling drag-to-pan movements.
-8. **Aurora Animated Waves**: The bottom section displays slow-drifting multicolor radial gradients mimicking polar auroras.
-9. **Gold Heart Particle Outro Burst**: When clicking the final button, the page explodes with gold hearts/sparks and types out:
-   *"Take care of yourself. Always."*
