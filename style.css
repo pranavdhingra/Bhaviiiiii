@@ -34,7 +34,7 @@
 
 /* 
 ==================================================================
-   BASE & RESET STYLES
+   BASE & RESET STYLES (SAFE-AREA FIX)
 ==================================================================
 */
 * {
@@ -61,7 +61,8 @@ body {
     min-height: 100%;
     min-height: -webkit-fill-available;
     background-color: var(--bg-color);
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    margin: 0;
+    padding: 0; /* Reset global padding - solves iOS Safari horizontal shifts */
 }
 
 /* Prevent scrolling while loading */
@@ -125,7 +126,7 @@ button {
     padding: 140px 0;
     position: relative;
     z-index: 2;
-    min-height: 100dvh; /* Safari dynamic viewport height */
+    min-height: 100dvh; /* Safari viewport heights */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -461,7 +462,6 @@ button {
     transform: translateY(0);
 }
 
-/* Large and Immersive - object-fit cover is restored for memory2 & memory3 */
 .story-image {
     width: 100%;
     height: 100%;
@@ -528,13 +528,12 @@ button {
     pointer-events: none;
 }
 
-/* Sharp contained overlay for memory1 inside blurred container */
 .story-image-container.blurred-bg-container .story-image {
     position: relative;
     z-index: 1;
     width: 100%;
     height: 100%;
-    object-fit: contain !important; /* Contain strictly on memory1 */
+    object-fit: contain !important; /* Contain strictly on memory1 to keep faces visible */
     border-radius: 12px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65);
     object-position: center;
@@ -578,7 +577,6 @@ button {
     border-color: rgba(var(--gold-rgb), 0.25);
 }
 
-/* Large and Immersive cover fit restored on Facetime card */
 .call-screenshot {
     width: 100%;
     height: 100%;
@@ -692,7 +690,6 @@ button {
     z-index: 1;
 }
 
-/* Cover mode restored to make it large, immersive, and full width */
 .fav-picture-img {
     width: 100%;
     height: 100%;
@@ -810,7 +807,6 @@ button {
     background-color: rgba(220, 100, 100, 0.2);
 }
 
-/* Diary pages restored to larger, filling cover fit */
 .diary-open-image {
     width: 100%;
     height: 100%;
@@ -868,7 +864,7 @@ button {
 
 /* 
 ==================================================================
-   SECTION 8: FINAL MEMORY VIDEO (CONTAINED SLIGHTLY SMALLER CARD)
+   SECTION 8: FINAL MEMORY VIDEO (ENLARGED CINEMATIC LAYOUT)
 ==================================================================
 */
 .video-section {
@@ -878,7 +874,7 @@ button {
 .video-container {
     position: relative;
     width: 90%;
-    max-width: 660px; /* Reduced dimension to guarantee full visibility */
+    max-width: 800px; /* Restored/enlarged to original premium size */
     aspect-ratio: 16 / 9;
     margin: 0 auto;
     border-radius: 24px;
@@ -892,7 +888,6 @@ button {
     background-color: #000000;
 }
 
-/* Blurred background behind the video using hero.jpeg */
 .video-container.blurred-bg-container {
     background-image: url('assets/images/hero.jpeg');
     background-size: cover;
@@ -921,10 +916,9 @@ button {
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: contain !important; /* Contain perfectly, never crop video contents */
+    object-fit: contain !important; /* Contain video perfectly inside container */
     position: relative;
     z-index: 1;
-    border-radius: 24px;
 }
 
 .video-audio-overlay {
@@ -1080,7 +1074,7 @@ button {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100dvh; /* Safari viewport fix */
+    height: 100dvh; /* Safari dynamic height fix */
     background-color: #000000;
     z-index: 10000;
     display: flex;
@@ -1331,7 +1325,7 @@ button {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100dvh; /* Dynamic viewport fix */
+    height: 100dvh;
     background: rgba(0, 0, 0, 0.95);
     z-index: 11000;
     display: flex;
@@ -1351,10 +1345,12 @@ button {
 */
 
 @media (max-width: 480px) {
-    /* Main Layout */
+    /* Main Layout - Clean viewport safe grids */
     .container {
         width: 100% !important;
+        max-width: 100% !important;
         padding: 0 16px !important;
+        margin: 0 auto !important;
     }
     
     .section {
@@ -1410,7 +1406,7 @@ button {
     .fav-picture-img {
         height: 100dvh;
         max-height: 100dvh;
-        width: 100vw;
+        width: 100%; /* Changed from 100vw to 100% to prevent horizontal offsets */
         border-radius: 0;
         border: none;
     }
@@ -1446,21 +1442,6 @@ button {
         margin-top: 20px;
         line-height: 1.7;
         padding: 0 10px;
-    }
-    
-    /* Climax Video Container - Centered, non-breakout card on mobile */
-    .video-container {
-        width: 90% !important;
-        max-width: 400px;
-        aspect-ratio: 16 / 9;
-        margin: 0 auto !important;
-        border-radius: 16px !important;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
-        border: 1px solid var(--glass-border);
-    }
-    
-    .final-video {
-        border-radius: 16px;
     }
     
     /* Outro typography adjustments */
